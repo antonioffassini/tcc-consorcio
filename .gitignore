@@ -1,0 +1,31 @@
+__pycache__/
+*.pyc
+.venv/
+build/monografia.docx
+build/monografia.pdf
+data/processed/*
+!data/processed/.gitkeep
+# PDFs de artigos: manter fora do git por peso e licenca.
+refs/pdfs/*.pdf
+
+# Artefatos intermediarios do pdflatex (abnTeX2)
+build/*.aux
+build/*.log
+build/*.out
+build/*.toc
+build/*.lof
+build/*.lot
+build/*.bbl
+build/*.blg
+build/*.synctex.gz
+build/*.fdb_latexmk
+build/*.fls
+build/*.idx
+build/*.ilg
+build/*.ind
+build/*.bcf
+build/*.run.xml
+
+# Lixo de SO
+.DS_Store
+Thumbs.db

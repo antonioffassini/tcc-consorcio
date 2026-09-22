@@ -1,0 +1,43 @@
+num	arquivo	titulo	paginas	insumos	escopo
+1.1	01-1-contexto	Contexto e relevância econômica	3	dados agregados Bacen	Tamanho e crescimento do sistema de consórcios; por que ele importa economicamente. NÃO entra mecânica do produto (vai em 2).
+1.2	01-2-problema	Problema de pesquisa	2	nenhum	Formulação da pergunta. NÃO antecipa método nem resultado.
+1.3	01-3-hipoteses	Hipóteses	1	nenhum	H1..Hn, cada uma apontando a seção do cap. 7 que a testa.
+1.4	01-4-objetivos	Objetivos	1	nenhum	Geral e específicos. Verbos verificáveis.
+1.5	01-5-contribuicoes	Contribuições reivindicadas	1	nenhum	O que é novo. Escrever por último, revisar ao fim.
+1.6	01-6-organizacao	Organização do trabalho	1	esqueleto fechado	Mapa dos capítulos.
+2.1	02-1-mecanica	Mecânica do grupo de consórcio	4	nenhum	Cota, fundo comum, assembleia, prazo. Didático.
+2.2	02-2-contemplacao	Contemplação por sorteio e por lance	4	normativos	Modalidades de lance (livre, fixo, embutido). Base do modelo do cap. 4.
+2.3	02-3-regulacao	Arcabouço regulatório	3	Lei 11.795/2008; normativos Bacen	Só o que restringe o espaço de mecanismos. NÃO é análise jurídica.
+2.4	02-4-inadimplencia	Inadimplência, desistência e efeitos no grupo	3	dados Bacen	Mecânica das saídas e impacto no fundo.
+2.5	02-5-formalizacao	O consórcio como jogo dinâmico de alocação	3	nenhum	Ponte informal para o cap. 4. Notação já canônica.
+3.1	03-1-busca	Estratégia de busca	2	log de buscas	Bases, strings, critérios de inclusão/exclusão, PRISMA simplificado.
+3.2	03-2-roscas	ROSCAs e poupança rotativa	4	PDFs fichados	Literatura internacional. Posicionar consórcio como caso regulado.
+3.3	03-3-leiloes	Teoria de leilões e desenho de mecanismo	5	PDFs fichados	Fundamentos que o cap. 4 usa. NÃO é survey exaustivo.
+3.4	03-4-econometria	Econometria estrutural com dados incompletos	4	PDFs fichados	Identificação sem observar todos os lances. Base do 6.3.
+3.5	03-5-marl	Aprendizado por reforço multiagente em mercados	4	PDFs fichados	Métodos e precedentes de uso econômico.
+3.6	03-6-sintese	Síntese e posicionamento	3	seções 3.2-3.5	A lacuna. Tabela comparativa dos trabalhos vizinhos.
+4.1	04-1-ambiente	Ambiente: estados, ações, transições	5	decisões do log	Formalização completa. Toda a notação do CONTEXT seção 5.
+4.2	04-2-heterogeneidade	Heterogeneidade dos participantes	3	decisões do log	Urgência, liquidez, custo de capital. Distribuições paramétricas.
+4.3	04-3-mecanismos	Regras de contemplação como mecanismo parametrizado	4	decisões do log	O vigente e as alternativas, sob uma parametrização comum.
+4.4	04-4-criterios	Critérios de avaliação	3	decisões do log	Bem-estar, estabilidade do fundo, objetivo prudencial. Trade-offs explícitos.
+4.5	04-5-escopo	Escopo e simplificações	2	CONTEXT seção 4	Toda hipótese simplificadora declarada, com efeito esperado.
+5.1	05-1-fontes	Fontes de dados	3	data/raw	Bacen 4010/2080/4110, dados por UF, ABAC. Cobertura e leiaute.
+5.2	05-2-pipeline	Pipeline de extração e consolidação	4	src/pipeline	Tratamento da quebra da Carta Circular 3.679/14. Reprodutibilidade.
+5.3	05-3-fatos	Fatos estilizados	5	results/fatos	Repartição lance/sorteio, prazos, desistência. Gráficos.
+5.4	05-4-momentos	Momentos-alvo para calibração	3	results/momentos	Quais momentos, por quê, e quais ficam de fora para sobre-identificar.
+5.5	05-5-limitacoes-dados	Limitações dos dados	2	nenhum	O que não é observável e o que isso impede de afirmar.
+6.1	06-1-arquitetura	Arquitetura da simulação	4	src/sim	Componentes, loop, seeds, custo computacional.
+6.2	06-2-agentes	Agentes de aprendizado por reforço	5	src/agents	Algoritmo, representação de estado, recompensa, treinamento.
+6.3	06-3-smm	Calibração por Simulated Method of Moments	5	src/calib	Função objetivo, pesos, otimizador, erros-padrão.
+6.4	06-4-validacao-analitica	Validação I: casos-limite com solução fechada	4	apêndice A; results/validacao	Marco de validação do solver.
+6.5	06-5-validacao-cross	Validação II: sobre-identificação	3	results/overid	Teste em momentos não usados na calibração.
+6.6	06-6-protocolo	Protocolo experimental e reprodutibilidade	2	Makefile	Seeds, versões, comando único.
+7.1	07-1-ajuste	Ajuste aos momentos observados	4	results/	
+7.2	07-2-overid	Testes de sobre-identificação	3	results/	
+7.3	07-3-equilibrio	Equilíbrio emergente vs. teoria clássica	4	results/	
+7.4	07-4-mecanismos	Comparação entre mecanismos	5	results/	
+7.5	07-5-robustez	Robustez da ordenação	4	results/	A afirmação central. Varredura do espaço de parâmetros.
+8.1	08-1-implicacoes	Implicações para o desenho regulatório	3	cap. 7	Prescritivo com cautela. NÃO redigir norma.
+8.2	08-2-tradeoffs	Trade-offs entre critérios	2	cap. 7	
+8.3	08-3-ameacas	Ameaças à validade	3	nenhum	Honesto e exaustivo. Blindagem contra a banca.
+9	09-conclusao	Conclusão e trabalhos futuros	3	tudo	
