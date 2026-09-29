@@ -5,7 +5,7 @@
 > O que não muda (tese, notação, escopo) fica em `CONTEXT.md`.
 > Bibliografia tem controle próprio em `docs/BIBLIOGRAFIA.md`.
 
-**Última atualização:** 12/09/2026 — sessão Cowork (replanejamento para 30 dias)
+**Última atualização:** 24/09/2026 — sessão Cowork (diagnóstico de atraso e pitch ao orientador)
 
 ---
 
@@ -20,6 +20,7 @@
 | Tema | Tema 4 (consórcios), escolhido e assumido |
 | Bloqueio principal | `CONTEXT.md` ainda em `PREENCHER`; ambiente local não configurado |
 | Risco mais próximo | G1 (sex 18/09) — o painel do Bacen identifica os parâmetros? |
+| **Situação em 24/09** | G0 cumprido (proposta em `build/`, `CONTEXT.md` preenchido, pasta renomeada). Nada de S1 executado: sem dados, sem `src/`, sem PDFs. G1 vencido sem teste. Único avanço: `git init` + `.venv` em 22/09. **Entrega 12/10 inviável pelo orçamento de pessoa-dia; ver §3** |
 
 ## 2. O que está pronto
 
@@ -53,9 +54,11 @@
 
 | Pendência | Bloqueia | Prazo |
 |---|---|---|
-| `CONTEXT.md` inteiro em `PREENCHER` — tese, pergunta, hipóteses, notação canônica | G0; P0 de qualquer seção nova; coerência dos caps. 1–2 já escritos | dom 13/09 |
-| Proposta de 4–6 páginas para o orientador | G0 | dom 13/09 |
-| Pasta com acento, espaço e aninhamento duplicado (`TCC - Consórcio/tcc-consórcio`) | Scripts bash, `pandoc text/*.md`, caminho LaTeX | sáb 12/09 |
+| **Repositório só existe no notebook do Antônio** — `.git/config` sem remote, nenhum push | Backup; trabalho dos outros dois autores | imediato |
+| **Reprogramar a entrega**: ~20 p-d disponíveis até 12/10 contra ~40 de escopo restante; 26/10 (fallback do PLANO) fecha a conta. Decisão dos três, depois registrar em §4 | Calendário inteiro, pitch ao orientador | antes da reunião |
+| Confirmar se a reunião de 14/09 com o orientador ocorreu e o que saiu dela | §1, pitch | imediato |
+| `CLAUDE.md` e `Makefile` ainda apontam para `make docx`; decisão de 12/09 é abnTeX2 | Coerência da cadeia de build | S1 |
+| Makefile chama `src.pipeline`, `src.experiments`, `src.analysis`, que não existem | `make all` | spike |
 | Ambiente local: Git, GitHub, Python, pandoc, abnTeX2, Claude Code | Tudo a partir da segunda | seg 14/09 |
 | `refs/abnt.csl` e template abnTeX2 inexistentes — `make docx` falha hoje | Compilação da monografia | ter 15/09 |
 | 22 PDFs faltando em `refs/pdfs/` (a pasta está vazia) | Auditoria zerar; caps. 1–2 fecharem | qua 16/09 |
@@ -119,3 +122,4 @@ Segunda-feira (14/09) em diante: cronograma em `docs/PLANO.md` §3.
 |---|---|---|
 | 12/09/2026 | Chat | Troca de tema; catálogo de 4 temas; plano de remontagem; plano operacional de 14 semanas; repositório montado; guia ABNT; seções 1.1-1.4 e capítulo 2 escritos; bibliografia verificada; decisão de migrar para Cowork |
 | 12/09/2026 | Cowork | Pasta vinculada e repositório auditado. Meta de 30 dias fixada; aprovação do orientador deixa de ser gate; corte de escopo em cinco linhas; RL sai do loop de SMM; abnTeX2 escolhido como formato final. `docs/PLANO.md` reescrito de 14 semanas para 30 dias em spike vertical. Levantados os buracos de infraestrutura: `refs/pdfs/` e `data/raw/` vazias, `refs/abnt.csl` e template inexistentes, `.git` ausente |
+| 24/09/2026 | Cowork | Diagnóstico: nada de S1 executado (12 dias de atraso); G0 cumprido; repo sem remote. `docs/pitch-orientador.md` criado (roteiro de fala, com calendário proposto até 26/10, pendente de decisão). Achado não verificado: página do Bacen lista "Bens Imóveis – Grupos" com contemplações — abrir o CSV é o teste de G1 |
