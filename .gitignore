@@ -29,3 +29,4 @@ build/*.run.xml
 # Lixo de SO
 .DS_Store
 Thumbs.db
+~$*
