@@ -23,7 +23,7 @@ Qual dos dois efeitos domina não é evidente a priori e depende do tamanho do g
 
 Multas e juros moratórios a cargo do consorciado, quando previstos em contrato, são destinados ao grupo e à administradora, não podendo o contrato estipular para o grupo percentual inferior a cinquenta por cento [@brasil2008lei11795]. Parte do custo da inadimplência é, portanto, revertida ao próprio fundo.
 
-Sob a Circular n. 3.432/2009, a assembleia geral ordinária podia determinar o cancelamento da contemplação do consorciado que, não tendo utilizado o respectivo crédito, viesse a ficar inadimplente [@bcb2009circ3432]. A contemplação não é, assim, um estado irreversível: existe um mecanismo de reversão que devolve o crédito ao fundo.
+Sob a Circular n. 3.432/2009, a assembleia geral ordinária podia determinar o cancelamento da contemplação do consorciado que, não tendo utilizado o respectivo crédito, viesse a ficar inadimplente [@bcb2009circ3432]. A Resolução BCB n. 285/2023 alterou esse tratamento: o consorciado contemplado que for excluído mantém assegurada a contemplação, com disponibilização de crédito parcial correspondente ao percentual amortizado do valor atualizado do bem, deduzidas as obrigações financeiras pendentes (art. 33). A mesma norma considera excluído o consorciado que deixe de cumprir as obrigações financeiras por três vencimentos (art. 32, II, na redação dada em dezembro de 2023) [@bcb2023res285]. No regime vigente, portanto, a exclusão do contemplado não cancela a contemplação; altera o valor do crédito a que ele tem direito.
 
 ## Exclusão e restituição
 
@@ -31,7 +31,7 @@ O consorciado excluído não contemplado tem direito à restituição da import�
 
 O ponto decisivo para este trabalho é o **momento** da restituição. A restituição ao excluído não é imediata: o entendimento consolidado na jurisprudência sobre os artigos 22 e 30 da lei é o de que a devolução ocorre mediante contemplação da cota excluída em sorteio, ou no encerramento do grupo, o que ocorrer primeiro. O participante excluído continua, portanto, a figurar nos sorteios das assembleias subsequentes — não para receber o crédito, mas para receber de volta o que pagou.
 
-> **Pendência de verificação.** O art. 30 da Lei n. 11.795/2008 foi objeto de veto parcial, e há discussão sobre a compatibilidade do condicionamento da restituição com o Código de Defesa do Consumidor. É necessário consultar o texto consolidado da lei e a jurisprudência mais recente antes de fixar essa regra no modelo. A modelagem do Capítulo 4 deve tratar o mecanismo de restituição como parametrizado, e não como constante.
+> **Pendência de verificação.** No texto consolidado da Lei n. 11.795/2008, o art. 30 mantém apenas o caput; os §§ 1º a 3º foram vetados. O entendimento jurisprudencial sobre o momento da restituição, referido acima, ainda não foi documentado com fonte e precisa ser citado antes do fechamento desta seção. Até lá, a modelagem do Capítulo 4 trata o mecanismo de restituição como parametrizado, e não como constante.
 
 ## Consequência estrutural para a modelagem
 

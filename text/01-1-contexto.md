@@ -1,6 +1,6 @@
 ---
 secao: 1.1
-titulo: Contexto e relevância econômica
+titulo: Contexto
 status: rascunho
 responsavel:
 insumos:
@@ -8,30 +8,21 @@ insumos:
 fontes:
 excecoes:
   - 11795
-  - 4010
-  - 2080
-  - 4110
   - 5,16
-  - 4,49
   - 500
-  - 378
-  - 32,1
   - 12,74
-  - 11,22
-  - 13,5
-paginas_alvo: 3
+  - 1990
+paginas_alvo: 2
 ---
 
-# Contexto e relevância econômica
+# Contexto
 
-O Sistema de Consórcios é um mecanismo de autofinanciamento coletivo regulado no Brasil pela Lei n. 11.795, de 8 de outubro de 2008, e supervisionado pelo Banco Central do Brasil [@brasil2008lei11795]. Em um grupo de consórcio, um conjunto determinado de participantes contribui mensalmente para um fundo comum destinado à aquisição de um bem ou serviço previamente especificado. A cada assembleia, o saldo disponível no fundo é alocado a uma ou mais cotas, que passam à condição de contempladas e recebem a carta de crédito correspondente. A alocação ocorre por dois canais: o sorteio, que distribui o crédito de forma aleatória entre as cotas adimplentes, e o lance, pelo qual o participante oferta a antecipação de parcelas para alterar sua posição na ordem de recebimento.
+O Sistema de Consórcios é um arranjo de autofinanciamento coletivo regulado pela Lei n. 11.795, de 8 de outubro de 2008, e supervisionado pelo Banco Central do Brasil [@brasil2008lei11795]. Um grupo de consórcio reúne um número determinado de participantes, que contribuem mensalmente para um fundo comum destinado à aquisição de um bem ou serviço de referência. A cada assembleia mensal, o saldo disponível nesse fundo é atribuído a uma ou mais cotas, que passam à condição de contempladas e recebem o crédito correspondente. Todo participante que se mantém adimplente é contemplado até o encerramento do grupo; o que varia entre eles é o momento em que isso acontece.
 
-A dimensão do sistema é macroeconomicamente relevante. Em 2025 foram comercializadas 5,16 milhões de cotas, volume 15% superior às 4,49 milhões do ano anterior, correspondendo a mais de R$ 500 bilhões em créditos comercializados — alta de 32,1% sobre os R$ 378 bilhões apurados em 2024. O número de participantes ativos superou pela primeira vez a marca de doze milhões em julho de 2025, atingindo 12,74 milhões em novembro do mesmo ano, ante 11,22 milhões um ano antes, crescimento de 13,5% [@abac2026anuario]. O sistema opera, portanto, na escala de um mercado de crédito de porte nacional, com participação relevante nos segmentos de imóveis, veículos leves, motocicletas, veículos pesados, serviços e bens móveis duráveis.
+A atribuição do crédito ocorre por dois canais. No **sorteio**, o crédito é atribuído aleatoriamente a uma das cotas habilitadas, sem custo adicional para o sorteado. No **lance**, o participante oferece antecipar parte das parcelas que ainda deve e, se a sua oferta estiver entre as maiores, é contemplado antes da vez. O sorteio ocorre primeiro; o lance disputa os recursos que restam no fundo depois dele. As regras que articulam os dois canais, e as condições em que cada um opera, são apresentadas em detalhe no Capítulo 2.
 
-Essa dimensão não é acidental. O consórcio ocupa, no orçamento das famílias e das empresas brasileiras, uma posição de substituto parcial do crédito bancário para aquisição de bens de alto valor. A ausência de juros — o custo do participante compõe-se essencialmente da taxa de administração e do fundo de reserva — torna a modalidade comparativamente mais atrativa em ambientes de política monetária restritiva, o que ajuda a explicar a expansão observada no período recente. Em contrapartida, o participante abre mão da disponibilidade imediata do bem: o crédito não é contratado, é aguardado.
+O sistema tem escala de mercado de crédito nacional. Em 2025 foram comercializadas 5,16 milhões de cotas, correspondentes a mais de R$ 500 bilhões em créditos, e o número de participantes ativos chegou a 12,74 milhões em novembro daquele ano [@abac2026anuario]. Para o participante, o consórcio funciona como alternativa ao financiamento bancário na aquisição de bens de alto valor, em especial imóveis e veículos: não há cobrança de juros, e o custo compõe-se essencialmente da taxa de administração. Em troca, o participante abre mão da disponibilidade imediata do bem. O crédito não é contratado; é aguardado, e o tempo de espera é incerto.
 
-Essa troca entre custo financeiro e incerteza temporal é a característica que distingue o consórcio de qualquer outro instrumento de crédito e que o converte em objeto próprio de estudo. O participante não escolhe apenas se adere ao grupo; ao longo de todo o prazo, ele decide recorrentemente se e quanto ofertar de lance, e essa decisão depende de quanto ele valoriza a antecipação do crédito, de quanta liquidez dispõe para antecipar parcelas e de sua conjectura sobre o comportamento dos demais participantes do grupo. O resultado observado — quem é contemplado, quando, e a que custo — não é imposto por nenhum agente central: emerge da interação estratégica descentralizada de milhões de participantes sob um conjunto de regras fixado por norma.
+Dessa troca entre custo financeiro e incerteza sobre o momento de recebimento decorre o comportamento que interessa a este trabalho. Ao longo de todo o prazo do grupo, cada participante decide, a cada assembleia, se oferta lance e de quanto. A decisão depende do quanto ele valoriza receber antes, de quanto dinheiro tem disponível para antecipar parcelas e do que espera que os demais façam. O resultado observado (quem é contemplado, quando e a que custo) não é determinado por nenhum agente central: resulta da interação de milhões de decisões individuais sob um conjunto de regras fixado por norma.
 
-Do ponto de vista da engenharia, trata-se de um mecanismo de alocação de recursos escassos operando em larga escala, com regras explícitas, restrição orçamentária dura e agentes heterogêneos que aprendem com a experiência. É exatamente a classe de sistema que a teoria de desenho de mecanismo e os métodos computacionais de simulação multiagente foram desenvolvidos para analisar.
-
-O sistema é, além disso, densamente instrumentado. As administradoras remetem ao Banco Central, em periodicidade mensal e trimestral, informações consolidadas por grupo, por administradora, por segmento de bem e por unidade da federação, incluindo a quantidade de cotistas contemplados por lance e por sorteio, os quantitativos de desistência e os saldos das contas de recursos de consórcio. Essas informações são publicadas em formato aberto e cobrem série histórica iniciada na década de 1990 [@bcb2026consorcios]. Trata-se, portanto, de um mercado de escala nacional, regras codificadas em lei e observabilidade agregada de longo prazo — combinação incomum e que viabiliza a investigação proposta neste trabalho.
+Por fim, o sistema é observado de forma sistemática. As administradoras remetem ao Banco Central, com periodicidade mensal e trimestral, informações consolidadas por grupo, por administradora, por segmento de bem e por unidade da federação, que são publicadas em formato aberto com série histórica iniciada na década de 1990 [@bcb2026consorcios]. Essas informações incluem o número de cotas contempladas em cada período e a sua repartição entre sorteio e lance, mas não incluem os lances individuais ofertados.

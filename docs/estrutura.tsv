@@ -1,10 +1,13 @@
 num	arquivo	titulo	paginas	insumos	escopo
-1.1	01-1-contexto	Contexto e relevância econômica	3	dados agregados Bacen	Tamanho e crescimento do sistema de consórcios; por que ele importa economicamente. NÃO entra mecânica do produto (vai em 2).
-1.2	01-2-problema	Problema de pesquisa	2	nenhum	Formulação da pergunta. NÃO antecipa método nem resultado.
-1.3	01-3-hipoteses	Hipóteses	1	nenhum	H1..Hn, cada uma apontando a seção do cap. 7 que a testa.
-1.4	01-4-objetivos	Objetivos	1	nenhum	Geral e específicos. Verbos verificáveis.
-1.5	01-5-contribuicoes	Contribuições reivindicadas	1	nenhum	O que é novo. Escrever por último, revisar ao fim.
-1.6	01-6-organizacao	Organização do trabalho	1	esqueleto fechado	Mapa dos capítulos.
+1.1	01-1-contexto	Contexto	2	dados agregados ABAC/Bacen	O que é o consórcio, os dois canais, a escala, a decisão do participante e o que o dado público contém. NÃO entra a regra detalhada (vai em 2).
+1.2	01-2-motivacao	Motivação	2	nenhum	Por que estudar: escolha regulatória nunca avaliada; efeito distributivo; tratável com dado público + computação.
+1.3	01-3-problema	Problema e pergunta de pesquisa	3	nenhum	Lacuna (ROSCA × consórcio, Quadro 1); dificuldades de observação e de solução; pergunta e Q1–Q3.
+1.4	01-4-proposicao	Proposição central	1	nenhum	Resposta provisória em duas partes (substantiva e metodológica). NÃO antecipa resultado.
+1.5	01-5-hipoteses	Hipóteses	2	nenhum	H1–H3 com teste e critério de rejeição; Quadro 2; dependência entre hipóteses.
+1.6	01-6-objetivos	Objetivos	1	nenhum	Geral e específicos (a)–(h), com capítulo correspondente.
+1.7	01-7-metodologia	Metodologia	2	nenhum	Visão geral das 7 etapas e da ordem verificação → validação → comparação.
+1.8	01-8-escopo	Escopo e contribuições esperadas	1	CONTEXT §4	Recorte (imóveis, pós-2024-07), exclusões e contribuições pretendidas.
+1.9	01-9-organizacao	Organização do trabalho	1	esqueleto fechado	Mapa dos capítulos e Quadro 3 (estrutura lógica da pesquisa).
 2.1	02-1-mecanica	Mecânica do grupo de consórcio	4	nenhum	Cota, fundo comum, assembleia, prazo. Didático.
 2.2	02-2-contemplacao	Contemplação por sorteio e por lance	4	normativos	Modalidades de lance (livre, fixo, embutido). Base do modelo do cap. 4.
 2.3	02-3-regulacao	Arcabouço regulatório	3	Lei 11.795/2008; normativos Bacen	Só o que restringe o espaço de mecanismos. NÃO é análise jurídica.

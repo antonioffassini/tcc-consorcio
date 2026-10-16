@@ -1,26 +1,20 @@
-# Plano Operacional do TCC — 30 dias
+# Plano Operacional do TCC — 13 dias
 
-Documento de execução. Substitui integralmente o plano de 14 semanas de 12/09/2026 (manhã).
-O que mudou e por quê está no log de decisões, `ESTADO.md` §4.
+Documento de execução. Reescrito em 29/09/2026 sobre o plano de 30 dias de 12/09, cujo §1
+(corte de escopo), §2 (spike vertical), §6, §8 e §9 continuam valendo. O que mudou e por quê
+está no log de decisões, `ESTADO.md` §4.
 
-**Entrega alvo: 12/10/2026.** Meta de ritmo, não contrato. Se escorregar, escorrega
-para 26/10 — não para dezembro. A função do prazo curto é forçar as decisões de corte
-agora, no dia 1, em vez de na sexta semana.
+**Entrega: segunda, 12/10/2026.** Mantida em 25/09. Não há reserva para escorregar.
 
 ---
 
 ## 0. Premissas
 
-- **Horizonte:** 30 dias corridos a partir de 12/09/2026.
-- **Equipe:** três autores, todos com dedicação parcial (estágio e disciplinas em curso).
-  Orçamento realista: **~36 pessoa-dia**. Escopo cortado para caber em ~44. A diferença
-  é conhecida e sai das reservas do Bloco IV.
-- **Aprovação do tema deixou de ser gate.** A conversa com o Prof. Cugnasca em
-  **segunda, 14/09**, é apresentação de proposta com trabalho feito, não pedido de licença.
-  O que ela pode produzir é ajuste de escopo, não bloqueio.
+- **Horizonte:** 13 dias, de 29/09 a 12/10.
+- **Produção no Claude Code** (código, testes, rascunhos); **autores** na decisão, revisão e
+  orientador; **Cowork** na pesquisa, revisão adversarial e continuidade.
 - **Formato final:** markdown em `text/` → pandoc → LaTeX abnTeX2 → PDF.
-- **Ferramentas:** Claude Code local como camada de produção; Cowork/chat como camada de
-  julgamento e pesquisa; Git obrigatório desde o dia 1.
+- **Dados em disco desde 25/09**; repositório no GitHub desde 29/09.
 
 ---
 
@@ -50,9 +44,9 @@ H2 e H3 ficam intactas — e são elas que sustentam a tese.
 
 O plano anterior era horizontal: fechar dados, depois modelo, depois calibração, depois
 resultados. Em 30 dias isso é suicídio, porque o risco fatal — *o pipeline inteiro não
-fecha* — só apareceria no dia 25.
+fecha* — só apareceria na véspera da entrega.
 
-O plano novo é vertical. **Até o dia 15 existe uma versão completa e feia de tudo:**
+O plano novo é vertical. **Até 02/10 (G2) existe uma versão completa e feia de tudo:**
 painel com uma data-base, modelo com dois agentes e um mecanismo alternativo, SMM com dois
 momentos, uma tabela em `results/`, um PDF compilando. Feio, mas ponta a ponta. Só depois
 disso é que cada camada engorda.
@@ -63,123 +57,63 @@ lugar errado do plano.
 
 ---
 
-## 3. Calendário
+## 3. Calendário — 13 dias (reescrito em 29/09)
 
-### D0 — sáb 12/09 e dom 13/09: o pacote de segunda
+O calendário de 30 dias (12/09) foi perdido na primeira quinzena: S1 não foi executada. A
+entrega em 12/10 foi mantida (decisão de 25/09). Isso só fecha porque a produção passa para o
+Claude Code: ele escreve o código e os rascunhos, e os autores decidem, revisam e atacam.
+Qualquer dia que escorregar come a folga de domingo 11/10, e não a validação.
 
-Objetivo único: chegar na segunda com artefato, não com ideia. O que o orientador precisa
-receber em mãos:
-
-- [ ] **Proposta de TCC, 4–6 páginas**, em PDF: contextualização, problema, pergunta,
-      hipóteses, objetivos, método em uma página, cronograma de 30 dias, e uma seção
-      explícita sobre o abandono do tema anterior e o que dele foi reaproveitado.
-- [ ] **`CONTEXT.md` fechado** — tese, pergunta, H1–H3, escopo excluído, notação canônica.
-- [ ] **Capítulos 1 e 2 impressos** como estão (rascunho de ~25 páginas). É o que dá
-      credibilidade: não é uma mudança de tema, é uma mudança de tema com dois capítulos escritos.
-- [ ] **`docs/BIBLIOGRAFIA.md`** com as 22 referências e o status de cada uma.
-- [ ] Este plano.
-
-Nada de código é necessário para segunda. Não gaste o fim de semana em pipeline.
-
-### S1 — 14 a 20/09: dados e formalização, em paralelo
-
-| Dia | Trilha A (dados) | Trilha B (modelo) | Trilha C (infra + calibração) |
+| Dia | Entrega | Onde | Gate |
 |---|---|---|---|
-| Seg 14 | Apresentação ao Cugnasca (os três) | idem | idem |
-| Seg 14 | Baixar todas as datas-base do Bacen para `data/raw/bacen/` | Ler Klonner 2003/2008 e Athey-Haile | Setup: Git, GitHub, venv, pandoc, abnTeX2, Claude Code |
-| Ter 15 | `make painel` rodando com uma data-base | Rascunhar 4.1 e 4.2 à mão | `refs/abnt.csl`, template abnTeX2 compilando com texto de teste |
-| Qua 16 | Painel completo, `results/qualidade_dados.csv` | 4.3 — espaço de mecanismos alternativos | Baixar os 22 PDFs para `refs/pdfs/`; `make auditoria` zerando nos caps. 1–2 |
-| Qui 17 | **Fatos estilizados: fração lance/sorteio por tamanho, prazo e tempo** | 4.4 — critérios de avaliação | Esqueleto de `src/`: ambiente, agente, runner |
-| Sex 18 | **G1** (ver §4) | 4.5 — escopo do modelo | Interface contratada: esquema do painel e assinatura do ambiente, por escrito no log |
-| Sáb–dom | Momentos-alvo definidos e separados em calibração vs. teste | Cap. 4 completo em rascunho | Ambiente rodando com agentes aleatórios |
+| **Ter 29/09** | `src/pipeline/build_panel.py`: painel grupo×mês (imóveis) e administradora×UF×trimestre; `results/qualidade_dados.csv`, `results/fatos_fracao_lance.csv`, `results/g1_identificacao.csv`; testes | Claude Code | **G1 formal** |
+| | `ESTADO.md` e este plano atualizados; normativos no git | Cowork / terminal | |
+| **Qua 30/09** | Reformulação de H2 e partição dos momentos (calibração × teste), **antes de qualquer ajuste**; registro no `ESTADO.md` §4 | Autores + Cowork | |
+| | Cap. 4 (4.1 a 4.5) em rascunho; notação do `CONTEXT.md` §5 congelada | Claude Code + revisão | |
+| | Reunião com o orientador, se ele ainda não viu a troca de tema | Autores | |
+| **Qui 01/10** | `src/sim`: ambiente do grupo sob M0 (sorteio com precedência → lance, vagas condicionadas ao fundo, excluídos no sorteio); testes de casos-limite analíticos | Claude Code | |
+| **Sex 02/10** | Política de lance paramétrica (≤4 parâmetros); SMM com 2 momentos; M1 (sorteio ponderado por tempo de espera); primeira tabela em `results/`; `make all` roda do zero | Claude Code | **G2** |
+| **Sáb 03/10** | M2; sobre-identificação nos momentos reservados | Claude Code + revisão | |
+| **Dom 04/10** | Experimento de RL para H1 (uma configuração, seed fixa); varredura de robustez da ordenação; PDFs acadêmicos baixados (login USP) | Claude Code + autores | |
+| **Seg 05/10** | **Congelamento**: `git tag G3-congelamento`; nada novo em `results/` depois disso | | **G3** |
+| **Ter 06/10** | Caps. 5 (dados) e 6 (método), que já têm insumo em disco | Claude Code (P0→P4) + auditoria | |
+| **Qua 07/10** | Caps. 3 (revisão) e 7 (resultados) | Claude Code + auditoria | |
+| **Qui 08/10** | Caps. 8 e 9; 1.5 e 1.6; P7 (coerência global) | Claude Code + auditoria | |
+| **Sex 09/10** | P5 (banca adversarial) nas 6 seções críticas: 3.6, 4.4, 5.5, 6.4, 7.5, 8.3; **reunião com o orientador com a versão completa** | Cowork (leitor independente) + autores | |
+| **Sáb 10/10** | Pré-textuais, resumo e abstract, compilação abnTeX2, `audit.py --strict` zerado | Claude Code | **G4** |
+| **Dom 11/10** | Folga para imprevistos | | |
+| **Seg 12/10** | **Entrega** | | |
 
-A separação entre momentos de calibração e momentos de teste é decidida **nesta semana,
-antes de ver qualquer ajuste**. Decidir depois é ajuste disfarçado de validação, e a banca
-pergunta.
-
-### S2 — 21 a 27/09: o spike fecha
-
-- Política de lance paramétrica implementada, com casos-limite analíticos como teste.
-- SMM: função objetivo, matriz de pesos, otimizador. Dois momentos primeiro, o resto depois.
-- Um mecanismo alternativo implementado, o mais simples (sugestão: sorteio ponderado por
-  tempo de espera — barato de implementar, defensável, e já rompe a lógica atual).
-- `results/` com a primeira tabela real.
-- `make all` roda do zero.
-- **G2 no domingo 27.**
-
-### S3 — 28/09 a 04/10: enriquecimento e congelamento
-
-- Demais mecanismos alternativos (alvo: 3 no total, incluindo o vigente).
-- Sobre-identificação: ajuste nos momentos reservados. **Se o modelo falha aqui, isso é
-  resultado e vai no texto** — não é motivo para mexer no modelo até passar.
-- Experimento de RL para H1, uma configuração, seed fixa.
-- Robustez: varredura do espaço de parâmetros, verificar se a ordenação entre mecanismos
-  se mantém.
-- **G3 sexta 02/10 à noite: congelamento.** Tudo em `results/` vira imutável.
-- Sábado e domingo: redação dos capítulos 5 e 6, que já têm insumo em disco.
-
-### S4 — 05 a 11/10: redação em massa e fechamento
-
-- Seg a qua: capítulos 3, 7, 8 e 9. Com resultado congelado, é a fase rápida — foi para
-  isso que a infraestrutura existe.
-- Qui 08: P7 (coerência global) e P5 (adversarial) nas seis seções críticas: 3.6, 4.4,
-  5.5, 6.4, 7.5, 8.3.
-- Sex 09: pré-textuais, resumo em português e inglês, listas, sumário. Compilação abnTeX2 final.
-- Sáb 10: **G4**. Auditoria estrita zerada, PDF compilando, checklist §9 completo.
-- Dom 11: folga de contingência. Se estiver usando esse dia como planejado, algo deu certo.
-- **Seg 12/10: entrega.**
-
----
+**Regra de corte, se algo atrasar:** sai primeiro o RL (H1 vira trabalho futuro), depois o
+M2. A validação (casos-limite e sobre-identificação) e a robustez da ordenação nunca saem.
 
 ## 4. Gates
 
-Quatro, todos com critério objetivo e ação definida em caso de falha.
+**G1 — ter 29/09. O painel identifica os parâmetros?**
+Leitura exploratória de 25/09 (`ESTADO.md` §5, itens 7–8): lance e sorteio só aparecem separados
+por administradora×UF×trimestre, e a variação da fração de lance é grande e quase toda **entre**
+administradoras. Critério para passar: `results/g1_identificacao.csv` reproduz essa variação no
+pipeline. *Falha:* calibração por alvos declarados, com H2 reescrita como consistência.
 
-**G0 — dom 13/09.** Pacote de segunda pronto.
-*Falha:* apresentar sem a proposta em PDF é o pior cenário possível para a credibilidade
-da troca de tema. Não falhe este.
+**G2 — sex 02/10.** `make all` roda do zero e produz uma tabela real.
+*Falha:* cortar M2 e RL, nessa ordem.
 
-**G1 — sex 18/09. O painel identifica os parâmetros?**
-Critério: existe variação observável na fração de contemplações por lance entre grupos de
-tamanhos, prazos e datas distintas, no segmento imóveis, pós-2024.
-*Falha:* não migrar de tema — não há prazo para isso. Migrar de **objeto**: passar de
-estimação estrutural para **calibração por alvos declarados** (parâmetros fixados por
-literatura e por dados agregados, sem SMM), e reescrever H2 como afirmação de consistência
-e não de identificação. Custa um dia de reescrita e salva o cronograma.
+**G3 — seg 05/10. Congelamento.** Tag no git. Nenhum experimento novo depois, sem exceção.
 
-**G2 — dom 27/09. `make all` roda do zero e produz uma tabela real.**
-*Falha:* cortar o mecanismo alternativo mais caro e o experimento de RL, nessa ordem.
-H1 vira trabalho futuro no cap. 9. Doloroso, não fatal.
+**G4 — sáb 10/10.** `python scripts/audit.py --strict` retorna zero, o PDF compila e todo
+arquivo em `text/` está com `status: fechado`.
 
-**G3 — sex 02/10. Congelamento.**
-Sem exceção. Todo experimento novo depois desta data é rejeitado, por melhor que pareça.
-É a regra que faz o TCC fechar.
+## 5. Divisão de trabalho
 
-**G4 — sáb 10/10.** `python scripts/audit.py --strict` retorna zero, PDF compila,
-todo arquivo em `text/` com `status: fechado`.
+| Quem | Faz |
+|---|---|
+| **Claude Code** (VS Code, na pasta) | Código, testes, rascunho de seção (P0→P4), auditoria, commits |
+| **Cowork** (claude.ai, projeto do TCC) | Busca e download de bibliografia e normativos; revisão adversarial (P5) como leitor independente; decisões de método; `ESTADO.md` |
+| **Pedro e Antônio** | Decisões de modelagem e escopo; revisão de todo texto antes de `fechado`; orientador; PDFs atrás do login USP |
+| **Pedro Paulo** | A definir; se entrar, fica com a trilha de dados (cap. 5) e com a revisão dos caps. 1–3 |
 
----
-
-## 5. Trilhas
-
-Mantida a divisão vertical do plano anterior — ela é o que evita dois autores ociosos —
-com os limites redesenhados para o escopo cortado.
-
-| Trilha | Escopo | Capítulos | Entregável próprio |
-|---|---|---|---|
-| **A — Dados** | Pipeline Bacen, painel, fatos estilizados, momentos-alvo, qualidade | 5 inteiro | `data/processed/painel.parquet` + `results/qualidade_dados.csv` |
-| **B — Modelo** | Formalização, ambiente, agentes paramétricos, casos-limite, RL | 4 e 6.1–6.2, 6.4 | Ambiente com testes analíticos passando |
-| **C — Calibração e resultados** | SMM, sobre-identificação, varredura, robustez, infra de build | 6.3, 6.5, 7 inteiro | `results/` completo + PDF compilando |
-
-Capítulos 1, 2, 3, 8 e 9 são compartilhados, com responsável nomeado no frontmatter de
-cada seção. **Preencher o campo `responsavel` de todas as 42 seções é tarefa da segunda-feira** —
-seção sem dono não é escrita.
-
-**As duas interfaces contratadas** (esquema do painel de A para C; assinatura do ambiente de
-B para C) têm prazo: **sexta 18/09, por escrito, no log**. Sem isso, A e B trabalham uma
-semana e não encaixam.
-
----
+O que não se delega ao Claude: a partição dos momentos, os critérios de bem-estar e a decisão
+de o que cortar. São as três escolhas que a banca vai perguntar quem fez e por quê.
 
 ## 6. O loop de seção
 
@@ -197,17 +131,9 @@ Orçamento por seção: 30–45 min nas expositivas, 2–3 h nas críticas.
 
 ## 7. Cadência
 
-Diária, não semanal — em 30 dias o ciclo semanal perde três oportunidades de correção.
-
-- **Todo dia, 15 min, por escrito no grupo:** o que fechou, o que travou, o que precisa da
-  outra trilha.
-- **Todo dia, ao parar:** commit. Auditoria antes do commit se tocou em `text/`.
-- **Toda decisão, na hora:** `ESTADO.md` §4. Decisão não registrada é decisão que será
-  redecidida diferente daqui a dez dias, e aí os capítulos discordam entre si.
-- **Orientador:** segunda 14/09 (proposta), sexta 25/09 (cap. 4 + fatos estilizados),
-  sexta 09/10 (versão completa). Sempre com arquivo, nunca com "estamos avançando".
-
----
+- **Todo dia, ao parar:** auditoria (se tocou em `text/`), `ESTADO.md` atualizado, commit e push.
+- **Toda decisão, na hora:** `ESTADO.md` §4.
+- **Orientador:** esta semana, se ainda não viu o tema; sexta 09/10, com a versão completa. Sempre com arquivo em mãos.
 
 ## 8. Modos de falha
 
@@ -220,8 +146,8 @@ Diária, não semanal — em 30 dias o ciclo semanal perde três oportunidades d
 | Referência alucinada | Citação sem PDF | `audit.py` no `make`, antes de todo commit |
 | Número inventado | Número na prosa sem CSV declarado | Idem, mais o campo `excecoes` no frontmatter |
 | Escopo infla | Ideia nova na S3 | §1 desta tabela e `CONTEXT.md` §4, lidos antes de aceitar |
-| abnTeX2 não compila no dia 9 | Template só testado no fim | Template compilando com texto de teste na **terça 15/09**, não em outubro |
-| TCC não fecha | Experimento rodando na S4 | G3, sem exceção |
+| abnTeX2 não compila no dia 10 | Template só testado no fim | Template compilando com texto de teste até **seg 05/10** |
+| TCC não fecha | Experimento rodando depois de 05/10 | G3, sem exceção |
 
 ---
 
@@ -239,13 +165,3 @@ Diária, não semanal — em 30 dias o ciclo semanal perde três oportunidades d
 - [ ] Repositório arquivado e referenciado na monografia
 
 ---
-
-## 10. O que fazer agora, neste fim de semana
-
-1. Renomear a pasta para `C:\Users\anton\Documents\tcc-consorcio` (sem acento, sem espaço,
-   sem aninhamento duplicado).
-2. Fechar o `CONTEXT.md`.
-3. Montar a proposta de 4–6 páginas para segunda.
-4. Instalar Git, GitHub CLI, Python, pandoc, abnTeX2 e Claude Code; primeiro commit e push.
-5. Preencher `responsavel` nas 42 seções e mandar as trilhas para os outros dois **hoje**,
-   não na segunda depois da reunião.
