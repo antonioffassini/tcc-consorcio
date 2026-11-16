@@ -99,6 +99,8 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $T$ | Prazo do grupo | $\mathbb{N}$, assembleias (meses) |
 | $t$ | Índice da assembleia | $\{1,\dots,T\}$ |
 | $i$ | Índice do participante | $\{1,\dots,N\}$ |
+| $j$ | Índice da administradora *(15/11, ESTADO §4)* | $\{1,\dots,J\}$ |
+| $g$ | Índice do grupo (subscrito: $N_g$, $T_g$) *(15/11)* | — |
 | $C$ | Valor do crédito da cota | R$, normalizado a $1$ no modelo |
 | $p$ | Parcela mensal | fração de $C$ |
 | $\tau_a$ | Taxa de administração | fração de $C$ |
@@ -134,9 +136,17 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $m_{i,t}$ | Modalidade do lance | $\{\text{livre},\text{embutido}\}$ |
 | $g_t$ | Número de vagas de contemplação em $t$ (endógeno a $R_t$) | $\mathbb{N}_0$ |
 | $g^s_t,\ g^b_t$ | Vagas por sorteio e por lance, $g^s_t+g^b_t=g_t$ | $\mathbb{N}_0$ |
+| $\kappa_g$ | Vagas de sorteio previstas por assembleia no contrato do grupo, $\kappa_g=\max(1,s_jN_g/T_g)$; valor não inteiro = arredondamento aleatório *(15/11)* | $\mathbb{R}_{\ge1}$ |
+| $s_j$ | Fração da capacidade ordinária mensal ($N_g/T_g$) reservada ao sorteio na administradora $j$ *(15/11)* | $\mathbb{R}_{>0}$ |
+| $m_s,\ \sigma_s$ | Mediana e dispersão (escala log) de $s_j\sim\text{LogNormal}(\log m_s,\sigma_s)$ *(15/11)* | $\mathbb{R}_{>0}$ |
+| $\bar b^{e}$ | Teto do lance embutido | fração de $C$ *(15/11)* |
+| $h(\cdot)$ | Risco mensal de inadimplência que leva à exclusão, por faixa de $t/T$ *(15/11)* | $[0,1]$ |
+| $\rho$ | Probabilidade de recolocação da vaga excluída *(15/11)* | $[0,1]$ |
 | $M$ | Mecanismo de contemplação: regra $(s_t,\{b_{i,t}\})\mapsto$ conjunto de contemplados | — |
 | $M_0$ | Mecanismo vigente (sorteio com precedência, seguido de lance) | — |
-| $M_1,M_2,\dots$ | Desenhos alternativos avaliados no Capítulo 7 | — |
+| $M_1,M_2,\dots$ | Desenhos alternativos avaliados no Capítulo 7. *16/11:* $M_1$ = sorteio ponderado pela situação da cota (peso 1 ativa, $\omega$ excluída) + lance pay-as-bid; $M_2$ = sorteio uniforme + lance de preço uniforme | — |
+| $\omega$ | Peso da cota excluída no sorteio de $M_1$ ($\omega=1$ reproduz $M_0$) *(16/11)* | $[0,1]$ |
+| $p^{u}_t$ | Preço uniforme do lance em $M_2$: o $(g^b_t+1)$-ésimo maior lance ofertado *(16/11)* | fração de $C$ |
 
 ### Comportamento e calibração
 
@@ -144,7 +154,7 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 |---|---|---|
 | $\pi_\phi$ | Política de lance paramétrica | $\pi_\phi:(z_{i,t},s_t)\mapsto b_{i,t}$ |
 | $\phi$ | Vetor de parâmetros comportamentais | $\mathbb{R}^{d_\phi}$, $d_\phi\le 4$ |
-| $\Theta$ | Vetor de parâmetros estruturais a calibrar, $\Theta=(\phi,F_\theta,F_\lambda)$ | — |
+| $\Theta$ | Vetor de parâmetros estruturais, $\Theta=(\phi,F_\theta,F_\lambda,m_s,\sigma_s)$; calibrados por SMM: $(\phi_0,m_s,\sigma_s)$ *(15/11)* | — |
 | $\hat{\mu}$ | Vetor de momentos empíricos (dados do Bacen) | $\mathbb{R}^{d_\mu}$ |
 | $\tilde{\mu}(\Theta)$ | Vetor de momentos simulados | $\mathbb{R}^{d_\mu}$ |
 | $\Omega$ | Matriz de pesos do SMM | $\mathbb{R}^{d_\mu\times d_\mu}$, p.s.d. |

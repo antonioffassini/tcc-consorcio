@@ -40,6 +40,8 @@ Só entra em `refs/refs.bib` a partir de `verificada`. Atualize esta tabela ao m
 | banchio2022artificial | verificada | baixar PDF (arXiv:2202.05947) — **ler primeiro** |
 | khezr2025use | verificada | baixar PDF |
 | canese2021multiagent | verificada | baixar PDF |
+| vickrey1961counterspeculation | verificada (16/11: J. Finance 16(1), 8–37, conferido em catálogos e no PDF do artigo) | baixar PDF — sustenta 4.3 (M2) |
+| krishna2010auction | verificada (16/11: 2. ed., Academic Press/Elsevier, ©2010, ISBN 9780123745071, conferido no catálogo da editora) | obter PDF ou capítulos 2 e parte II — sustenta 4.3 (M2) |
 | Besley-Coate-Loury *allocative performance* | candidata | confirmar versão publicada |
 | Calomiris e Rajaraman (1998) | candidata | confirmar periódico e páginas |
 | Anderson e Baland (2002) | candidata | confirmar |
