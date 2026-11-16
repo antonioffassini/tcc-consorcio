@@ -3,30 +3,60 @@ __pycache__/
 .venv/
 build/monografia.docx
 build/monografia.pdf
+tcc/build/monografia.docx
+tcc/build/monografia.pdf
 data/processed/*
 !data/processed/.gitkeep
+tcc/data/processed/*
+!tcc/data/processed/.gitkeep
 # PDFs de artigos: manter fora do git por peso e licenca.
 refs/pdfs/*.pdf
+tcc/refs/pdfs/*.pdf
 
 # Artefatos intermediarios do pdflatex (abnTeX2)
 build/*.aux
+tcc/build/*.aux
 build/*.log
+tcc/build/*.log
 build/*.out
+tcc/build/*.out
 build/*.toc
+tcc/build/*.toc
 build/*.lof
+tcc/build/*.lof
 build/*.lot
+tcc/build/*.lot
 build/*.bbl
+tcc/build/*.bbl
 build/*.blg
+tcc/build/*.blg
 build/*.synctex.gz
+tcc/build/*.synctex.gz
 build/*.fdb_latexmk
+tcc/build/*.fdb_latexmk
 build/*.fls
+tcc/build/*.fls
 build/*.idx
+tcc/build/*.idx
 build/*.ilg
+tcc/build/*.ilg
 build/*.ind
+tcc/build/*.ind
 build/*.bcf
+tcc/build/*.bcf
 build/*.run.xml
+tcc/build/*.run.xml
 
 # Lixo de SO
 .DS_Store
 Thumbs.db
 ~$*
+
+# Java (poo-jogo)
+target/
+*.class
+.idea/
+*.iml
+
+# IA: dados brutos grandes
+ia-reclamacoes/data/raw/
