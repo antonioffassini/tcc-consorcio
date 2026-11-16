@@ -1,0 +1,5 @@
+momento,simulado,real,grupos_simulados
+frac_lance,0.7672,0.7344,300
+frac_lance_dp_entre_grupos,0.0125,0.1163,300
+taxa_contempl_mediana,0.0049,0.0051,300
+frac_sem_contempl,0.1795,0.0663,300

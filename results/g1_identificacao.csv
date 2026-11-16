@@ -1,0 +1,6 @@
+teste,estatistica,p_valor,criterio,passa
+administradoras_com_2+_trimestres,49.0,,n >= 20,True
+kruskal_wallis_frac_lance_por_adm,282.4,6.123096926705568e-35,"p < 0,01",True
+fracao_variancia_entre_adm,0.9385,,">= 0,5",True
+amplitude_frac_lance,0.8413,,">= 0,3",True
+spearman_lance_tamanho_abs,0.3161,,">= 0,3",True
