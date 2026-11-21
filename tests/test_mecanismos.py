@@ -170,3 +170,60 @@ def test_M0_por_mecanismo_igual_ao_padrao():
 def test_registro():
     assert set(MECANISMOS) == {"M0", "M1", "M2"}
     assert MECANISMOS["M2"].lance is regra_M2
+
+
+# ---------------------------------------------------------------- revisão de 19/11
+
+from src.sim.regras import m1_espera  # noqa: E402
+
+SEPARADO = dict(sorteio_excluidos="separado", vagas_excluidos=1)
+
+
+def test_sorteio_separado_ativas_primeiro_e_excluidas_depois():
+    # Com excluídas em sorteio separado, a vaga de sorteio das ativas nunca é tomada por
+    # uma excluída: sem lance e com recurso para uma carta por mês, há exatamente uma
+    # contemplação de ativa por mês enquanto houver ativa elegível.
+    par = Parametros(N=200, T=200, h=0.02, rho=1.0, phi0=0, phi1=0, phi2=0, **SEPARADO)
+    r = simula(par, seed=3, horizonte=60)
+    assert (r.contempl_sorteio[:60] == 1).all()
+    comum = simula(Parametros(N=200, T=200, h=0.02, rho=1.0, phi0=0, phi1=0, phi2=0), seed=3, horizonte=60)
+    assert comum.contempl_sorteio[:60].sum() < 60 and comum.restituicoes[:60].sum() > 0
+
+
+def test_teto_de_restituicao_por_assembleia():
+    base = dict(N=400, T=150, h=0.03, rho=1.0, phi0=0, phi1=0, phi2=0, sorteio_excluidos="separado")
+    um = simula(Parametros(vagas_excluidos=1, teto_restituicao=0.0, **base), seed=5, horizonte=100)
+    assert um.restituicoes.max() <= 1
+    varios = simula(Parametros(vagas_excluidos=1, teto_restituicao=0.5, **base), seed=5, horizonte=100)
+    assert varios.restituicoes.sum() > um.restituicoes.sum()
+    assert varios.restituicoes.max() > 1
+
+
+def test_conservacao_no_regime_separado_com_sobra():
+    par = Parametros(N=500, T=150, emb_max=0.3, h_idade=((0.2, 0.5, 10), (0.03, 0.01, 0.002)), rho=1.0,
+                     atraso_exclusao=3, sorteio_sobra=True, teto_restituicao=0.2, **SEPARADO)
+    for mec in (M0, M1, M2):
+        r = simula(par, seed=1, mecanismo=mec)
+        assert abs(r.entradas - r.saidas - r.saldo_final) < 1e-8
+        assert (r.saldo >= -1e-9).all()
+
+
+def test_M1_espera_trivial_no_grupo_fechado_e_nao_no_aberto():
+    c = _cotas(4, 0)
+    elig = np.arange(4)
+    assert np.allclose(m1_espera(1.0).sorteio.pesos(elig, c, 10), 11.0)   # todos entraram em t=0
+    c.entrada[:] = [0, 0, 5, 9]                                            # grupo aberto: recolocadas
+    w = m1_espera(1.0).sorteio.pesos(elig, c, 10)
+    assert np.allclose(w, [11, 11, 6, 2])
+    assert np.allclose(m1_espera(0.0).sorteio.pesos(elig, c, 10), 1.0)   # beta = 0 é M0
+
+
+def test_M1_espera_reduz_dispersao_da_espera_em_grupo_aberto():
+    # Cenário em que a maior parte das cotas é contemplada dentro do prazo (N = T), para que
+    # a dispersão não seja dominada pela censura no encerramento.
+    par = Parametros(N=150, T=150, h=0.01, rho=1.0, phi0=0, phi1=0, phi2=0, **SEPARADO)
+    d0, d1 = [], []
+    for s in range(6):
+        e0 = simula(par, seed=s, mecanismo=M0).espera; e1 = simula(par, seed=s, mecanismo=m1_espera(2.0)).espera
+        d0.append(np.nanstd(e0)); d1.append(np.nanstd(e1))
+    assert np.mean(d1) < np.mean(d0)

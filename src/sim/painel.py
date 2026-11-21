@@ -38,7 +38,12 @@ from .grupo import Parametros, regra_M0, simula
 
 KAPPAS = (1, 2, 3, 4)
 GRADE_S = (0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1.0, 1.3, 1.7)
-FORMAS = ("fracao", "kappa")
+NIVEIS_SOBRA = (0, 1)
+FORMAS = ("sobra", "fracao", "kappa")
+# "sobra" (19/11, ESTADO §4): a heterogeneidade contratual é o destino da sobra sem lance;
+# nível 1 = a administradora faz sorteio da sobra (Porto, Itaú, Sicredi), 0 = leva o saldo
+# à assembleia seguinte (Santander); P(nível 1) = pi. As vagas de sorteio das ativas ficam
+# em kappa_a = 1 (o que vier da base). "fracao" é o modelo de 16/11 (sensibilidade).
 CORTES_IDADE = (0.1, 0.2, 1 / 3, 0.5, 2 / 3, 10.0)
 MIN_CONTEMPL = 30
 
@@ -145,11 +150,18 @@ def _roda_mec(args):
 
 
 def niveis_de(forma: str) -> tuple:
-    return GRADE_S if forma == "fracao" else KAPPAS
+    return {"fracao": GRADE_S, "kappa": KAPPAS, "sobra": NIVEIS_SOBRA}[forma]
 
 
 def vagas(forma: str, nivel: float, N: int, T: int) -> float:
     return max(1.0, nivel * N / T) if forma == "fracao" else float(nivel)
+
+
+def ajusta(base: Parametros, forma: str, nivel, N: int, T: int) -> Parametros:
+    """Parâmetros do grupo (N, T) no nível contratual `nivel` da forma dada."""
+    if forma == "sobra":
+        return replace(base, N=N, T=T, sorteio_sobra=bool(nivel))
+    return replace(base, N=N, T=T, vagas_sorteio=vagas(forma, nivel, N, T))
 
 
 def simula_desenho(des: Desenho, base: Parametros, kappas=None, regra=regra_M0, sorteio=None,
@@ -162,7 +174,7 @@ def simula_desenho(des: Desenho, base: Parametros, kappas=None, regra=regra_M0, 
     tarefas, chaves = [], []
     for k in kappas:
         for g in des.grupos.itertuples():
-            par = replace(base, N=g.N, T=g.T, vagas_sorteio=vagas(forma, k, g.N, g.T))
+            par = ajusta(base, forma, k, g.N, g.T)
             if mecanismo is None:
                 tarefas.append((par, g.seed + 7919 * rep, g.horizonte, ts[g.gid], regra, sorteio))
             else:
@@ -196,8 +208,15 @@ def pesos_fracao(m_s: float, sigma_s: float, grade=GRADE_S) -> np.ndarray:
     return w / w.sum()
 
 
+def pesos_sobra(pi: float) -> np.ndarray:
+    p = float(np.clip(pi, 0.0, 1.0))
+    return np.array([1.0 - p, p])
+
+
 def pesos(forma: str, psi: tuple, niveis) -> np.ndarray:
-    """psi = (nu,) para 'kappa'; (m_s, sigma_s) para 'fracao'."""
+    """psi = (nu,) para 'kappa'; (m_s, sigma_s) para 'fracao'; (pi,) para 'sobra'."""
+    if forma == "sobra":
+        return pesos_sobra(psi[0])
     return pesos_kappa(psi[0], tuple(niveis)) if forma == "kappa" else pesos_fracao(psi[0], psi[1], tuple(niveis))
 
 

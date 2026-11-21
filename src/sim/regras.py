@@ -5,8 +5,13 @@ restrição de recursos ficam no simulador (`grupo.simula`), iguais para todos.
 
   M0 — vigente: sorteio uniforme entre ativas não contempladas e excluídas
        não restituídas; lance pay-as-bid (cada vencedor paga o próprio lance).
-  M1 — sorteio ponderado pela situação da cota: peso 1 para a cota ativa e
-       omega para a excluída; lance pay-as-bid. Com omega = 1, é M0.
+  M1 — (19/11) sorteio das ativas ponderado pela espera: peso
+       (1 + meses desde a entrada)^beta, beta = 1 de referência; lance
+       pay-as-bid. Só distingue cotas em grupo aberto (recolocação), que é o
+       caso dos dados. Com beta = 0, é M0. A versão de 16/11 (peso omega da
+       excluída num sorteio comum) continua disponível em m1(omega, 0), mas
+       saiu da comparação: nos contratos, o sorteio de excluídas é separado
+       e posterior (ESTADO §5 item 26).
   M2 — sorteio uniforme; lance de preço uniforme: os k maiores lances vencem
        e todos pagam o (k+1)-ésimo maior lance (primeiro lance recusado).
 
@@ -108,13 +113,17 @@ class Mecanismo:
     sorteio: Callable | None = None   # None = uniforme (rng.choice), como no protótipo
 
 
-OMEGA_M1 = 0.5   # valor de referência; a comparação varre omega (passo 4)
+BETA_M1 = 1.0   # valor de referência; o passo 4 varre beta
 
 M0 = Mecanismo("M0")
-M1 = Mecanismo("M1", regra_M0, SorteioPonderado(OMEGA_M1))
+M1 = Mecanismo("M1", regra_M0, SorteioPonderado(omega=1.0, beta_espera=BETA_M1))
 M2 = Mecanismo("M2", regra_M2)
 MECANISMOS = {"M0": M0, "M1": M1, "M2": M2}
 
 
 def m1(omega: float, beta_espera: float = 0.0) -> Mecanismo:
-    return Mecanismo(f"M1(omega={omega:g})", regra_M0, SorteioPonderado(omega, beta_espera))
+    return Mecanismo(f"M1(omega={omega:g},beta={beta_espera:g})", regra_M0, SorteioPonderado(omega, beta_espera))
+
+
+def m1_espera(beta: float) -> Mecanismo:
+    return Mecanismo(f"M1(beta={beta:g})", regra_M0, SorteioPonderado(1.0, beta))

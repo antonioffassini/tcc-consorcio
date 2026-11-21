@@ -62,6 +62,12 @@ class Parametros:
     phi2: float = -0.10
     emb_max: float = 0.0    # teto do lance embutido, fração do crédito (art. 13)
     sorteio_sobra: bool = False
+    # sorteio de excluídas (ESTADO §4, 19/11): "comum" = mesmo sorteio das ativas (tipo Sicredi,
+    # protótipo); "separado" = depois do sorteio das ativas, com vagas_excluidos restituições
+    # garantidas (havendo saldo) e outras enquanto a soma restituída na assembleia <= teto_restituicao
+    sorteio_excluidos: str = "comum"
+    vagas_excluidos: int = 1
+    teto_restituicao: float = 0.0
 
     def risco(self, t: int) -> float:
         if self.h_idade is None:
@@ -138,13 +144,19 @@ class _Cotas:
         self.lam = np.zeros(cap)
         self.parcela = np.zeros(cap)
         self.inad = np.full(cap, -1)
+        self.t_excl = np.full(cap, -1)      # assembleia da exclusão
+        self.t_rest = np.full(cap, -1)      # assembleia da restituição
+        self.livre = np.zeros(cap)          # lance livre pago na contemplação
+        self.emb = np.zeros(cap)            # lance embutido usado na contemplação
+        self.t_cont = np.full(cap, -1)      # assembleia da contemplação
 
     def cresce(self, extra):
         if self.n + extra <= len(self.sit):
             return
         cap = max(2 * len(self.sit), self.n + extra)
         for nome, fill in [("sit", ATIVA), ("devedor", 0.0), ("pago", 0.0), ("entrada", 0),
-                           ("espera", np.nan), ("theta", 0.0), ("lam", 0.0), ("parcela", 0.0), ("inad", -1)]:
+                           ("espera", np.nan), ("theta", 0.0), ("lam", 0.0), ("parcela", 0.0), ("inad", -1), ("t_excl", -1), ("t_rest", -1),
+                           ("livre", 0.0), ("emb", 0.0), ("t_cont", -1)]:
             v = getattr(self, nome)
             novo = np.full(cap, fill, dtype=v.dtype)
             novo[: len(v)] = v
@@ -170,25 +182,38 @@ def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
     R = entradas = saidas = lances_pagos = lances_emb = 0.0
     cs, cl, rs, at, sd = (np.zeros(T, int), np.zeros(T, int), np.zeros(T, int),
                           np.zeros(T, int), np.zeros(T))
+    falha = np.zeros(T, int)
 
-    def sorteia_um(t, so_ativas=False):
+    def sorteia_um(t, pool="comum", limite=np.inf):
+        """Uma extração. pool: 'comum' (ativas e excluídas), 'ativas' ou 'excluidas'.
+        A regra de sorteio do mecanismo vale para 'comum' e 'ativas'; excluídas entre si
+        são sorteadas de modo uniforme. Retorna False se não houve contemplação/restituição
+        (sem elegível, saldo insuficiente ou custo acima de `limite`)."""
         nonlocal R, saidas
         sit = c.sit[: c.n]
-        elig = np.flatnonzero(sit == ATIVA) if so_ativas else np.flatnonzero((sit == ATIVA) | (sit == EXCLUIDA))
+        if pool == "ativas":
+            elig = np.flatnonzero(sit == ATIVA)
+        elif pool == "excluidas":
+            elig = np.flatnonzero(sit == EXCLUIDA)
+        else:
+            elig = np.flatnonzero((sit == ATIVA) | (sit == EXCLUIDA))
         if len(elig) == 0:
             return False
-        i = rng.choice(elig) if sorteio is None else sorteio(rng, elig, c, t)
+        if pool == "excluidas" or sorteio is None:
+            i = rng.choice(elig)
+        else:
+            i = sorteio(rng, elig, c, t)
         if i is None:
             return False
         i = int(i)
         custo = 1.0 if c.sit[i] == ATIVA else c.pago[i]
-        if R + EPS < custo:
+        if R + EPS < custo or custo > limite + EPS:
             return False
         R -= custo; saidas += custo
         if c.sit[i] == ATIVA:
-            c.sit[i] = CONTEMPLADA; c.espera[i] = t + 1 - c.entrada[i]; cs[t] += 1
+            c.sit[i] = CONTEMPLADA; c.espera[i] = t + 1 - c.entrada[i]; cs[t] += 1; c.t_cont[i] = t
         else:
-            c.sit[i] = RESTITUIDA; rs[t] += 1
+            c.sit[i] = RESTITUIDA; rs[t] += 1; c.t_rest[i] = t
         return True
 
     H = T if horizonte is None else min(T, int(horizonte))
@@ -206,9 +231,20 @@ def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
         resto = par.vagas_sorteio - kap
         if resto > 1e-12 and rng.random() < resto:
             kap += 1
+        separado = par.sorteio_excluidos == "separado"
+        if kap and R + EPS < 1.0 and (c.sit[: c.n] == ATIVA).any():
+            falha[t] = 1     # sorteio previsto não realizado por falta de saldo
         for _ in range(kap):
-            if not sorteia_um(t):
+            if not sorteia_um(t, "ativas" if separado else "comum"):
                 break
+        if separado:
+            restituido, k = 0.0, 0
+            while True:
+                lim = np.inf if k < par.vagas_excluidos else par.teto_restituicao - restituido
+                r0 = R
+                if not sorteia_um(t, "excluidas", lim):
+                    break
+                restituido += r0 - R; k += 1
         # 3. lance com o saldo residual
         cand = np.flatnonzero((sit == ATIVA) & (dev > EPS))
         if len(cand):
@@ -221,9 +257,10 @@ def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
                 dev[venc] -= lv + em; c.pago[venc] += lv
                 R = R_novo
                 sit[venc] = CONTEMPLADA; c.espera[venc] = t + 1 - c.entrada[venc]; cl[t] += len(venc)
+                c.t_cont[venc] = t; c.livre[venc] = lv; c.emb[venc] = em
         # 4. sorteio da sobra (sensibilidade)
         if par.sorteio_sobra:
-            while R + EPS >= 1.0 and sorteia_um(t):
+            while R + EPS >= 1.0 and sorteia_um(t, "ativas" if separado else "comum"):
                 pass
         # 5. inadimplência, exclusão e recolocação
         def recoloca(sai):
@@ -242,7 +279,7 @@ def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
 
         if par.atraso_exclusao > 0:
             vence = np.flatnonzero((sit == INADIMPLENTE) & (t - c.inad[:n] >= par.atraso_exclusao))
-            sit[vence] = EXCLUIDA
+            sit[vence] = EXCLUIDA; c.t_excl[vence] = t
             if t < T - 1:
                 recoloca(vence)
         h = par.risco(t)
@@ -252,15 +289,20 @@ def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
             if par.atraso_exclusao > 0:
                 sit[sai] = INADIMPLENTE; c.inad[sai] = t
             else:
-                sit[sai] = EXCLUIDA
+                sit[sai] = EXCLUIDA; c.t_excl[sai] = t
                 recoloca(sai)
         sd[t] = R
     # encerramento: restitui excluídos (e inadimplentes) remanescentes com o saldo
     for i in [] if H < T else np.flatnonzero((c.sit[: c.n] == EXCLUIDA) | (c.sit[: c.n] == INADIMPLENTE)):
-        v = min(c.pago[i], R); R -= v; saidas += v
+        v = min(c.pago[i], R); R -= v; saidas += v; c.t_rest[i] = T
     res = Resultado(cs, cl, rs, at, sd, c.espera[: c.n].copy(), entradas, saidas, R,
                     lances_pagos, lances_emb)
     res.extra["cotas_total"] = c.n
+    n = c.n
+    res.extra.update(falha_sorteio=falha, horizonte=H, theta=c.theta[:n].copy(), entrada=c.entrada[:n].copy(),
+                     t_cont=c.t_cont[:n].copy(), livre=c.livre[:n].copy(), emb=c.emb[:n].copy(),
+                     t_excl=c.t_excl[:n].copy(), t_rest=c.t_rest[:n].copy(), pago=c.pago[:n].copy(),
+                     situacao=c.sit[:n].copy())
     return res
 
 
