@@ -111,7 +111,7 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | Símbolo | Significado | Domínio/unidade |
 |---|---|---|
 | $\theta_i$ | Urgência do participante $i$ na antecipação do crédito | $\mathbb{R}_{>0}$ |
-| $\delta_i$ | Fator de desconto implícito, $\delta_i = e^{-\theta_i}$ | $(0,1)$ |
+| $\delta_i$ | Fator de desconto implícito, $\delta_i = e^{-\theta_i}$, por ano ($\theta_i$ é taxa anual) *(19/11)* | $(0,1)$ |
 | $\lambda_{i,t}$ | Liquidez disponível de $i$ em $t$ para antecipar parcelas | fração de $C$ |
 | $F_\theta,\ F_\lambda$ | Distribuições dos tipos na população do grupo | — |
 
@@ -136,16 +136,19 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $m_{i,t}$ | Modalidade do lance | $\{\text{livre},\text{embutido}\}$ |
 | $g_t$ | Número de vagas de contemplação em $t$ (endógeno a $R_t$) | $\mathbb{N}_0$ |
 | $g^s_t,\ g^b_t$ | Vagas por sorteio e por lance, $g^s_t+g^b_t=g_t$ | $\mathbb{N}_0$ |
-| $\kappa_g$ | Vagas de sorteio previstas por assembleia no contrato do grupo, $\kappa_g=\max(1,s_jN_g/T_g)$; valor não inteiro = arredondamento aleatório *(15/11)* | $\mathbb{R}_{\ge1}$ |
-| $s_j$ | Fração da capacidade ordinária mensal ($N_g/T_g$) reservada ao sorteio na administradora $j$ *(15/11)* | $\mathbb{R}_{>0}$ |
+| $\kappa_g$ | Vagas de sorteio de ativas previstas por assembleia. *Desde 19/11:* $\kappa_g=1$ no modelo base; no modelo de 16/11 (sensibilidade), $\kappa_g=\max(1,s_jN_g/T_g)$ com arredondamento aleatório | $\mathbb{R}_{\ge1}$ |
+| $\bar r$ | Teto da soma restituída a excluídas por assembleia, além da primeira restituição *(19/11)* | fração de $C$ |
+| $\eta$ | Fração das administradoras cujo contrato leva a sobra sem lance a novo sorteio *(19/11)* | $[0,1]$ |
+| $s_j$ | Fração da capacidade ordinária mensal ($N_g/T_g$) reservada ao sorteio na administradora $j$ — só no modelo de 16/11 *(15/11)* | $\mathbb{R}_{>0}$ |
 | $m_s,\ \sigma_s$ | Mediana e dispersão (escala log) de $s_j\sim\text{LogNormal}(\log m_s,\sigma_s)$ *(15/11)* | $\mathbb{R}_{>0}$ |
 | $\bar b^{e}$ | Teto do lance embutido | fração de $C$ *(15/11)* |
 | $h(\cdot)$ | Risco mensal de inadimplência que leva à exclusão, por faixa de $t/T$ *(15/11)* | $[0,1]$ |
 | $\rho$ | Probabilidade de recolocação da vaga excluída *(15/11)* | $[0,1]$ |
 | $M$ | Mecanismo de contemplação: regra $(s_t,\{b_{i,t}\})\mapsto$ conjunto de contemplados | — |
 | $M_0$ | Mecanismo vigente (sorteio com precedência, seguido de lance) | — |
-| $M_1,M_2,\dots$ | Desenhos alternativos avaliados no Capítulo 7. *16/11:* $M_1$ = sorteio ponderado pela situação da cota (peso 1 ativa, $\omega$ excluída) + lance pay-as-bid; $M_2$ = sorteio uniforme + lance de preço uniforme | — |
-| $\omega$ | Peso da cota excluída no sorteio de $M_1$ ($\omega=1$ reproduz $M_0$) *(16/11)* | $[0,1]$ |
+| $M_1,M_2,\dots$ | Desenhos alternativos avaliados no Capítulo 7. *19/11:* $M_1$ = sorteio das ativas ponderado pela espera, peso $(1+\text{meses desde a entrada})^{\beta}$, + lance pay-as-bid; $M_2$ = sorteio uniforme + lance de preço uniforme. (*16/11:* $M_1$ era o peso $\omega$ da excluída em sorteio comum, retirado) | — |
+| $\beta$ | Expoente do peso pela espera no sorteio de $M_1$ ($\beta=0$ reproduz $M_0$) *(19/11)* | $\mathbb{R}_{\ge0}$ |
+| $\omega$ | Peso da cota excluída em sorteio comum — versão de 16/11 de $M_1$, fora da comparação *(16/11)* | $[0,1]$ |
 | $p^{u}_t$ | Preço uniforme do lance em $M_2$: o $(g^b_t+1)$-ésimo maior lance ofertado *(16/11)* | fração de $C$ |
 
 ### Comportamento e calibração
@@ -154,7 +157,7 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 |---|---|---|
 | $\pi_\phi$ | Política de lance paramétrica | $\pi_\phi:(z_{i,t},s_t)\mapsto b_{i,t}$ |
 | $\phi$ | Vetor de parâmetros comportamentais | $\mathbb{R}^{d_\phi}$, $d_\phi\le 4$ |
-| $\Theta$ | Vetor de parâmetros estruturais, $\Theta=(\phi,F_\theta,F_\lambda,m_s,\sigma_s)$; calibrados por SMM: $(\phi_0,m_s,\sigma_s)$ *(15/11)* | — |
+| $\Theta$ | Vetor de parâmetros estruturais, $\Theta=(\phi,F_\theta,F_\lambda,\bar r,\eta)$; calibrados por SMM: $(\phi_0,\bar r,\eta)$ *(19/11; em 16/11, $(\phi_0,m_s,\sigma_s)$)* | — |
 | $\hat{\mu}$ | Vetor de momentos empíricos (dados do Bacen) | $\mathbb{R}^{d_\mu}$ |
 | $\tilde{\mu}(\Theta)$ | Vetor de momentos simulados | $\mathbb{R}^{d_\mu}$ |
 | $\Omega$ | Matriz de pesos do SMM | $\mathbb{R}^{d_\mu\times d_\mu}$, p.s.d. |
@@ -168,8 +171,12 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $U_i$ | Utilidade realizada do participante $i$ | unidades de $C$ |
 | $\mathcal{W}(M)$ | Bem-estar agregado dos participantes sob o mecanismo $M$ | unidades de $C$ |
 | $\mathcal{E}(M)$ | Dispersão do tempo de espera até a contemplação | assembleias |
-| $\mathcal{S}(M)$ | Estabilidade financeira do grupo | ver definição em 4.4 |
+| $\mathcal{S}(M)$ | Estabilidade financeira do grupo: fração das assembleias em que o sorteio previsto não ocorre por falta de saldo *(19/11)* | $[0,1]$ |
 | $w_i$ | Tempo de espera de $i$ até a contemplação | assembleias |
+| $e_i,\ \ell_i$ | Parte embutida e parte livre do lance pago por $i$ na contemplação *(19/11)* | fração de $C$ |
+| $r_i$ | Assembleias restantes do prazo na contemplação de $i$ *(19/11)* | assembleias |
+| $\mathcal{R}(M)$ | Prazo médio entre a exclusão e a restituição das cotas excluídas *(19/11)* | assembleias |
+| $a_{i,t}$ | Assembleias decorridas desde a entrada de $i$ no grupo, usado no peso de $M_1$ *(19/11)* | assembleias |
 
 **Convenções.** Índice $i$ sempre participante, $t$ sempre assembleia. Valores monetários
 sempre em fração do crédito $C$, nunca em reais, exceto em tabelas descritivas do Capítulo 5.
