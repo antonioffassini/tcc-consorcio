@@ -1,0 +1,13 @@
+chave,valor
+semente_bootstrap,20261116
+B,500
+B_theta,100
+replicas,3
+grupos_por_adm,12
+comportamental,"""phi0"""
+grade,"[-0.3, -0.24, -0.18, -0.12, -0.06, 0.0, 0.06, 0.12, 0.18, 0.24, 0.3]"
+grade_s,"[0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1.0, 1.3, 1.7]"
+W,"""diag(1/Var_boot(mu_cal))"""
+Q_min,1.367709315800855e-11
+emb_max,0.25
+fixos,"{""phi1"": 0.1, ""phi2"": -0.1, ""mu_theta"": 0.0, ""sd_theta"": 0.5, ""a_lam"": 2.0, ""b_lam"": 5.0, ""lam_max"": 0.6, ""phi0"": null}"

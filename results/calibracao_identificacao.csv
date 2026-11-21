@@ -1,0 +1,15 @@
+parametro,passo,momento,delta_por_passo,delta_em_ep,sv1,sv2,sv3,condicao,mu_dado,ep_dado
+phi0,0.05,frac_lance_media,0.010513,0.666392,,,,,0.734368,0.015775
+phi0,0.05,frac_lance_dp,-0.003705,-0.392986,,,,,0.116339,0.009429
+phi0,0.05,taxa_contempl_q50,0.000171,0.371836,,,,,0.005059,0.00046
+lam_max,0.2,frac_lance_media,0.000411,0.026043,,,,,0.734368,0.015775
+lam_max,0.2,frac_lance_dp,-0.00025,-0.026519,,,,,0.116339,0.009429
+lam_max,0.2,taxa_contempl_q50,1e-06,0.00182,,,,,0.005059,0.00046
+m_s,0.1,frac_lance_media,-0.040213,-2.549076,,,,,0.734368,0.015775
+m_s,0.1,frac_lance_dp,0.017494,1.855317,,,,,0.116339,0.009429
+m_s,0.1,taxa_contempl_q50,-5.9e-05,-0.128221,,,,,0.005059,0.00046
+sigma_s,0.1,frac_lance_media,-0.007465,-0.473191,,,,,0.734368,0.015775
+sigma_s,0.1,frac_lance_dp,0.01769,1.876159,,,,,0.116339,0.009429
+sigma_s,0.1,taxa_contempl_q50,-1e-05,-0.021708,,,,,0.005059,0.00046
+conjunto_phi0,,valores_singulares,,,3.613832,1.128225,0.323868,11.158349,,
+conjunto_lam_max,,valores_singulares,,,3.532268,1.106911,0.00052,6792.247172,,
