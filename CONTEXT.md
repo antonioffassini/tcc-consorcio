@@ -114,6 +114,7 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $\delta_i$ | Fator de desconto implícito, $\delta_i = e^{-\theta_i}$, por ano ($\theta_i$ é taxa anual) *(19/11)* | $(0,1)$ |
 | $\lambda_{i,t}$ | Liquidez disponível de $i$ em $t$ para antecipar parcelas | fração de $C$ |
 | $F_\theta,\ F_\lambda$ | Distribuições dos tipos na população do grupo | — |
+| $\bar\lambda$ | Escala da liquidez: $\lambda_i=\bar\lambda\,u_i$, $u_i\sim\text{Beta}$; no modelo, $\lambda_{i,t}=\lambda_i$ é constante no tempo *(21/11)* | fração de $C$ |
 
 ### Estado
 
@@ -157,12 +158,17 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 |---|---|---|
 | $\pi_\phi$ | Política de lance paramétrica | $\pi_\phi:(z_{i,t},s_t)\mapsto b_{i,t}$ |
 | $\phi$ | Vetor de parâmetros comportamentais | $\mathbb{R}^{d_\phi}$, $d_\phi\le 4$ |
+| $\phi_0,\phi_1,\phi_2$ | Componentes de $\phi$ na política linear $b^*_{i,t}=\max(0,\ \phi_0+\phi_1\theta_i+\phi_2(T-t)/T)$ *(21/11)* | $\mathbb{R}$ |
+| $\hat\Theta$ | Estimativa de $\Theta$ por SMM *(21/11)* | — |
 | $\Theta$ | Vetor de parâmetros estruturais, $\Theta=(\phi,F_\theta,F_\lambda,\bar r,\eta)$; calibrados por SMM: $(\phi_0,\bar r,\eta)$ *(19/11; em 16/11, $(\phi_0,m_s,\sigma_s)$)* | — |
 | $\hat{\mu}$ | Vetor de momentos empíricos (dados do Bacen) | $\mathbb{R}^{d_\mu}$ |
 | $\tilde{\mu}(\Theta)$ | Vetor de momentos simulados | $\mathbb{R}^{d_\mu}$ |
 | $\Omega$ | Matriz de pesos do SMM | $\mathbb{R}^{d_\mu\times d_\mu}$, p.s.d. |
 | $Q(\Theta)$ | Função objetivo, $(\hat\mu-\tilde\mu)^\top\Omega(\hat\mu-\tilde\mu)$ | $\mathbb{R}_{\ge0}$ |
 | $\mu^{\text{cal}},\ \mu^{\text{tes}}$ | Partição dos momentos: calibração e teste (definida antes de ver ajuste) | — |
+| $\Delta$ | Diferença simulado menos dado nos momentos de teste, $\tilde\mu^{\text{tes}}(\hat\Theta)-\hat\mu^{\text{tes}}$ *(21/11)* | $\mathbb{R}^{2}$ |
+| $\Sigma$ | Covariância de $\Delta$: dado + simulação + incerteza de $\hat\Theta$ *(21/11)* | $\mathbb{R}^{2\times2}$ |
+| $J$ | Estatística de Wald do teste de H2, $J=\Delta^\top\Sigma^{-1}\Delta$ *(21/11)* | $\mathbb{R}_{\ge0}$ |
 
 ### Critérios de avaliação
 

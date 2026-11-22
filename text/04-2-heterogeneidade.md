@@ -1,19 +1,61 @@
 ---
 secao: 4.2
 titulo: Heterogeneidade dos participantes
-status: esqueleto
+status: rascunho
 responsavel:
 insumos:
   - decisões do log
+  - ESTADO.md §4, 2026-11-15 (heterogeneidade em três camadas; forma das vagas) e 2026-11-19 (revisão pelos regulamentos)
+  - ESTADO.md §5 itens 8, 18 e 26
+  - src/sim/grupo.py, src/sim/painel.py
 fontes:
+  - results/parametros_modelo.csv
+  - results/fatos_momentos.csv
+  - results/g1_identificacao.csv
+  - results/arquivo_2026-11-16/calibracao_theta.csv
 excecoes:
+  - 11.795
+  - 285
+  - 14.6
 paginas_alvo: 3
 ---
 
 # Heterogeneidade dos participantes
 
-<!-- ESCOPO: Urgência, liquidez, custo de capital. Distribuições paramétricas. -->
+A diferença entre administradoras é o traço mais forte dos dados. No regime posterior à Resolução BCB n. 285/2023, a fração das contemplações de ativas que ocorre por lance tem média de 0,734 e desvio-padrão de 0,116 entre administradoras e trimestres, e 0,94 da sua variância está entre administradoras, e não entre trimestres de uma mesma administradora (`results/fatos_momentos.csv`). O teste de Kruskal-Wallis rejeita a igualdade das distribuições por administradora com folga (estatística 282,4; `results/g1_identificacao.csv`). Um modelo em que todos os grupos fossem iguais reproduziria, no máximo, a média. Esta seção define de onde vem a variação no modelo, em três camadas: a estrutura observada de cada grupo, uma cláusula contratual latente por administradora e os tipos dos participantes.
 
-<!-- Esta secao esta com status 'esqueleto' e e ignorada pela auditoria.
-     Mude para 'rascunho' quando comecar a escrever e para 'fechado'
-     quando passar na revisao adversarial. -->
+## Estrutura observada
+
+Cada grupo simulado copia três características de um grupo real do painel por grupo (seção 5.1): o prazo $T_g$, o tamanho $N_g$ (mediana das cotas ativas no período) e a idade, isto é, a assembleia em que o grupo se encontrava em cada mês observado. Para cada administradora, sorteiam-se até doze grupos do painel, e os momentos simulados são calculados exatamente nos meses em que o grupo aparece nos dados (seção 6.1). Essa camada não tem parâmetro: tudo nela é observado. Ela importa porque parte da diferença entre administradoras vem da composição da carteira. Uma administradora com grupos jovens contempla, no mês típico, de forma diferente de outra com grupos perto do encerramento, independentemente da regra.
+
+## Cláusula contratual latente
+
+A segunda camada é o que o regulamento de cada administradora decide e o Bacen não publica. A Lei n. 11.795/2008 e a Resolução BCB n. 285/2023 deixam ao contrato a forma do sorteio e as regras do lance (seção 4.3), e os regulamentos lidos neste trabalho divergem justamente num ponto que afeta a fração de lance: o destino do saldo que sobra depois do lance. Em três dos cinco contratos, a sobra vai a novos sorteios entre as ativas na mesma assembleia; em um, passa à assembleia seguinte [CITAR: portoseguro2025regulamento; itau2024condicoes; santander2025regulamento; ademicon2024contrato; sicredi2026regulamento — referências verificadas, PDFs pendentes]. Quando a sobra é sorteada, cada assembleia com saldo folgado gera contemplações por sorteio além da prevista, e a fração de lance da administradora cai.
+
+O modelo representa essa cláusula como uma variável binária por administradora: com probabilidade $\eta$, a administradora sorteia a sobra. Todos os grupos de uma administradora seguem a mesma cláusula, o que reproduz a estrutura dos dados, em que a variação está entre administradoras. $\eta$ é calibrado (seção 6.3), e o valor estimado é 0,84 (`results/parametros_modelo.csv`).
+
+A alternativa natural seria um efeito fixo por administradora, com um parâmetro para cada uma das administradoras do painel. Com quatro momentos de calibração, esse modelo não seria identificável. A distribuição populacional com um parâmetro preserva a heterogeneidade entre administradoras sem pedir aos dados o que eles não têm.
+
+Na versão do modelo de 16/11, que o Capítulo 7 mantém como análise de sensibilidade, a heterogeneidade contratual vinha de outra cláusula: o número de sorteios por assembleia, proporcional à capacidade ordinária do grupo, $\kappa_g = \max(1,\ s_j N_g/T_g)$, com $s_j \sim \text{LogNormal}(\log m_s, \sigma_s)$ por administradora. A calibração dessa versão deu $m_s = 0{,}51$ e $\sigma_s = 0{,}34$ (`results/arquivo_2026-11-16/calibracao_theta.csv`). A leitura dos regulamentos mostrou que nenhum deles fixa um número de sorteios por assembleia além do condicionamento ao saldo, e a cláusula foi trocada pela da sobra; a seção 7.1 descreve essa revisão.
+
+## Tipos dos participantes
+
+A terceira camada é a dos tipos, informação privada de cada participante. A urgência $\theta_i$ mede quanto o participante valoriza receber o crédito mais cedo e é lida como taxa anual de desconto: o fator de desconto implícito é $\delta_i = e^{-\theta_i}$ por ano. A liquidez $\lambda_i$ é o montante, em frações do crédito, de que o participante dispõe para ofertar lance livre. As distribuições são
+
+$$
+\theta_i \sim F_\theta = \text{LogNormal}(0,\ 0{,}5),
+\qquad
+\lambda_i = \bar\lambda\, u_i,\quad u_i \sim \text{Beta}(2, 5),\quad \bar\lambda = 0{,}6,
+$$
+
+sorteadas de forma independente entre si e entre participantes (`results/parametros_modelo.csv`). O participante que entra pela recolocação de uma vaga recebe um tipo novo, sorteado das mesmas distribuições.
+
+A lognormal dá urgência sempre positiva, com cauda à direita: a maioria dos participantes tem urgência moderada, e poucos têm urgência alta, que são os que, pela política da seção 4.1, ofertam lance. A Beta reescalada limita a liquidez ao intervalo $[0, \bar\lambda]$ e concentra a massa em valores baixos, o que corresponde a um participante típico com pouca reserva própria em relação ao crédito. A independência entre urgência e liquidez é uma simplificação: é plausível que quem tem mais urgência tenha menos reserva, e uma correlação negativa reduziria o lance livre de quem mais quer antecipar o crédito.
+
+O lance embutido atenua a restrição de liquidez. Com teto $\bar b^{e} = 0{,}3$, valor fixado nos regulamentos que o explicitam [CITAR: itau2024condicoes, cl. 14.6; santander2025regulamento, cl. 72 — PDFs pendentes], um participante sem liquidez nenhuma ainda pode ofertar até 30% do crédito, à custa de receber menos. As duas tecnologias de lance têm custos diferentes: o lance livre consome reserva própria; o embutido reduz o crédito recebido. O critério de bem-estar da seção 4.4 contabiliza as duas de forma distinta.
+
+O escopo da seção previa, além de urgência e liquidez, o custo de capital do participante. No modelo, esse papel é desempenhado pela própria urgência: $\theta_i$ é a única taxa de desconto do participante e governa tanto o valor de antecipar o crédito quanto o custo de imobilizar liquidez num lance. Separar as duas exigiria um parâmetro que nenhum momento disponível identifica.
+
+## O que é calibrado e o que é fixado
+
+Das três camadas, apenas $\eta$ e os parâmetros de comportamento e de restituição, $(\phi_0, \bar r)$, são calibrados. A estrutura observada vem dos dados, e as distribuições $F_\theta$ e $F_\lambda$ ficam fixas nos valores acima. A escolha é forçada pela informação disponível: com quatro momentos de calibração e três parâmetros livres, não há graus de liberdade para estimar também a forma das distribuições de tipos. A consequência é que os resultados do Capítulo 7 são condicionais a $F_\theta$ e $F_\lambda$, e a sensibilidade a essas escolhas é uma das ameaças discutidas na seção 8.3 [RESULTADO PENDENTE: sensibilidade de H3 a $F_\theta$ e $F_\lambda$, se houver tempo antes do congelamento].
