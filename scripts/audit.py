@@ -87,14 +87,20 @@ def csv_values(path):
     with path.open(newline="", encoding="utf-8", errors="replace") as fh:
         for row in csv.reader(fh):
             for cell in row:
-                v = to_float(cell)
+                # CSV usa ponto decimal: "1.095" e 1,095, e nao 1095 (ESTADO §4, 21/11)
+                try:
+                    v = float(cell)
+                except ValueError:
+                    v = to_float(cell)
                 if v is not None:
                     out.add(v)
     return out, True
 
 
 def close(v, pool):
-    return any(abs(v - p) <= max(TOL * abs(p), 1e-9) for p in pool)
+    # NUM_RE nao captura o sinal, entao o texto "-0,038" chega aqui como 0,038:
+    # compara-se a magnitude (ESTADO §4, 21/11)
+    return any(abs(v - abs(p)) <= max(TOL * abs(p), 1e-9) for p in pool)
 
 
 def bib_keys():
