@@ -1,0 +1,12 @@
+chave,valor
+forma,"""sobra_reg"""
+theta,"{""phi0"": -0.05075438834954556, ""teto_restituicao"": 0.1584303976311731, ""phi1"": 0.5732527377127324}"
+pesos_niveis,[1.0]
+replicas,3
+grupos,1629
+B,500
+n_theta,10
+mecanismos,"[""M0"", ""M2"", ""M3rs_p0.05""]"
+criterios,"{""W"": 1, ""E"": -1, ""S"": -1, ""Rst"": -1}"
+politica,"""fixa entre mecanismos (crítica de Lucas); [DECISÃO PENDENTE: papel do RL na comparação]"""
+robustez,"[{""mecanismo"": ""M2"", ""sum"": 6, ""count"": 10, ""robusta"": false}, {""mecanismo"": ""M3rs_p0.05"", ""sum"": 8, ""count"": 10, ""robusta"": true}]"

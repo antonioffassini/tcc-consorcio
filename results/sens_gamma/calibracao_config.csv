@@ -1,0 +1,20 @@
+chave,valor
+forma,"""sobra_reg"""
+semente_bootstrap,20261116
+B,500
+B_theta,30
+replicas,1
+grupos_por_adm,12
+parametros,"[""phi0"", ""teto_restituicao""]"
+grades,"{""phi0"": [-0.3, -0.2, -0.15, -0.1, -0.05, 0.0, 0.05, 0.1, 0.2, 0.3], ""teto_restituicao"": [0.0, 0.1, 0.2, 0.35, 0.7, 1.5]}"
+momentos_calibracao,"[""frac_lance_media"", ""frac_lance_dp"", ""taxa_contempl_q50"", ""frac_sorteio_excluidos""]"
+W,"""diag(1/Var_boot(momentos de calibração))"""
+Q_min,4.8596865237425995
+graus_sobreidentificacao,2
+Q_direto,4.760380277044936
+emb_max,0.3
+sorteio_excluidos,"""separado"""
+eta0,0.75
+base_json,"""{\""theta_dist\"": \""gamma\"", \""gamma_forma\"": 2.0, \""gamma_media\"": 0.2, \""phi1\"": 0.5732527377127324}"""
+theta_dist,"""gamma"""
+fixos,"{""phi1"": 0.5732527377127324, ""phi2"": -0.1, ""mu_theta"": 0.0, ""sd_theta"": 0.5, ""a_lam"": 2.0, ""b_lam"": 5.0, ""lam_max"": 0.6, ""vagas_sorteio"": 1, ""vagas_excluidos"": 1}"

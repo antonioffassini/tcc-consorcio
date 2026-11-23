@@ -47,10 +47,12 @@ Dessa lacuna e dessas dificuldades decorre a pergunta que orienta o trabalho:
 
 > **Em que medida o mecanismo de contemplação vigente no Sistema de Consórcios brasileiro é eficiente, sob critérios de bem-estar dos participantes e de estabilidade financeira do grupo, quando comparado a desenhos alternativos de alocação admissíveis sob a mesma regulação?**
 
-A pergunta desdobra-se em três questões, cada uma ligada a uma das hipóteses da seção 1.5:
+A pergunta desdobra-se em quatro questões, cada uma ligada a uma das hipóteses da seção 1.5:
 
-**Q1.** Que comportamento de lance emerge quando participantes que diferem em urgência e em liquidez decidem repetidamente sob as regras vigentes, e esse comportamento coincide com a previsão dos modelos clássicos de leilão?
+**Q1.** O comportamento de lance que emerge quando participantes que diferem em urgência e em liquidez decidem repetidamente sob as regras vigentes pode ser descrito pelos modelos clássicos de leilão, dispensando a simulação?
 
 **Q2.** É possível ajustar um modelo desse comportamento de modo que ele reproduza os agregados publicados pelo regulador, dispondo-se apenas de observação agregada?
 
 **Q3.** Existe desenho alternativo de contemplação que supere o vigente sob os critérios adotados, e essa superioridade se mantém diante da incerteza que resta sobre os parâmetros do modelo?
+
+**Q4.** A ordenação entre desenhos obtida com comportamento de lance fixo se mantém quando os participantes adaptam o lance à regra em vigor?

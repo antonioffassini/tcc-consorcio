@@ -39,18 +39,22 @@ brasileiro é eficiente, sob critérios de bem-estar dos participantes e de esta
 financeira do grupo, quando comparado a desenhos alternativos de alocação admissíveis sob a
 mesma restrição regulatória?
 
-Desdobra-se em três questões subordinadas — Q1, Q2 e Q3 —, enunciadas em `text/01-2-problema.md`.
+Desdobra-se em quatro questões subordinadas, enunciadas em `text/01-3-problema.md` *(22/11)*:
 
-**H1 — Divergência comportamental.** O comportamento de lance que emerge de participantes que
-aprendem por interação repetida sob as regras vigentes difere sistematicamente da previsão de
-equilíbrio dos modelos estáticos de leilão de valor privado, e essa divergência é atribuível à
-restrição de liquidez, ao caráter repetido da disputa e à externalidade que cada contemplação
-impõe aos demais. → **Testada na seção 7.3.**
+- **Q1.** O comportamento de lance que emerge sob as regras vigentes pode ser descrito pelos modelos estáticos de leilão, dispensando a simulação?
+- **Q2.** É possível ajustar um modelo desse comportamento que reproduza os agregados publicados pelo regulador, dispondo-se apenas de observação agregada?
+- **Q3.** Existe desenho alternativo admissível que supere o vigente sob os critérios adotados, de forma robusta à incerteza de calibração?
+- **Q4.** A ordenação entre desenhos obtida com comportamento fixo se mantém quando os participantes adaptam o lance à regra em vigor?
+
+**H1 — Insuficiência da teoria estática (auxiliar).** O lance que emerge de participantes que
+aprendem por interação repetida sob as regras vigentes difere da previsão dos modelos estáticos
+de leilão de valor privado, por causa da restrição de liquidez, da repetição da disputa e do
+efeito de cada contemplação sobre os demais; logo, a avaliação exige simulação.
+→ **Testada na seção 7.3.** Critério: ESTADO §4, 22/11.
 
 **H2 — Adequação empírica.** É possível calibrar o modelo de comportamento por método de
 momentos simulados, usando exclusivamente os agregados publicados pelo regulador, de modo que
-ele reproduza momentos não empregados na calibração — em particular a variação da fração de
-contemplações por lance entre grupos de tamanhos, prazos e segmentos distintos.
+ele reproduza momentos não empregados na calibração.
 → **Testada nas seções 7.1 e 7.2.**
 
 **H3 — Dominância de desenho alternativo.** Existe ao menos um desenho alternativo de
@@ -58,14 +62,19 @@ contemplação, admissível sob as restrições da regulação vigente, que domi
 pelo menos um critério sem deteriorar os demais; e essa ordenação é robusta à incerteza de
 calibração compatível com os dados observados. → **Testada nas seções 7.4 e 7.5.**
 
-**Dependência entre hipóteses.** A rejeição de H2 invalida o uso do modelo para fins
-prescritivos e retira sustentação a H3 — razão pela qual a validação antecede a comparação
-entre desenhos no desenvolvimento. H1 é independente das outras duas: sua rejeição não
-compromete a tese, apenas reduz a contribuição metodológica.
+**H4 — Persistência da ordenação com lance adaptado (central).** A ordenação de H3 se mantém
+quando os participantes adaptam o lance a cada regra, representados por agentes de aprendizado
+por reforço treinados sob cada desenho; responde à crítica de Lucas à comparação com política
+fixa. → **Testada na seção 7.6.** Critério: ESTADO §4, 22/11.
 
-**Estatuto de H1 após o corte de 12/09.** H1 passa a ser testada por um experimento único de
-aprendizado por reforço sobre o ambiente já calibrado, e não por agentes que aprendem dentro do
-laço de calibração. Isso precisa estar dito em 6.2 e reconhecido como limitação em 8.3.
+**Dependência entre hipóteses.** A rejeição de H2 invalida o uso do modelo para fins
+prescritivos e retira sustentação a H3 e H4. H1 e H4 dependem de os agentes convergirem sob
+$M_0$; se não convergirem, caem as duas, e H2 e H3 ficam. A ordem de execução é: calibração e
+H2 → H3 → H1 → H4. *(Estrutura H1–H4 de 22/11, pendente do aval do orientador.)* *(23/11)* **H5 — Desenho robusto ao aprendizado (exploratória, formulada depois de H4):** existe desenho admissível que domina $M_0$ com lance adaptado; família, escolha no conjunto A e teste no B registrados em ESTADO §4.
+
+**Agentes fora do laço de calibração.** O SMM usa a política paramétrica $\pi_\phi$; os agentes
+de H1 e H4 treinam sobre o ambiente já calibrado e não são calibrados aos dados. Isso precisa
+estar dito em 6.2 e reconhecido como limitação em 8.3.
 
 ## 4. O que este trabalho NÃO é
 
@@ -140,6 +149,7 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $\kappa_g$ | Vagas de sorteio de ativas previstas por assembleia. *Desde 19/11:* $\kappa_g=1$ no modelo base; no modelo de 16/11 (sensibilidade), $\kappa_g=\max(1,s_jN_g/T_g)$ com arredondamento aleatório | $\mathbb{R}_{\ge1}$ |
 | $\bar r$ | Teto da soma restituída a excluídas por assembleia, além da primeira restituição *(19/11)* | fração de $C$ |
 | $\eta$ | Fração das administradoras cujo contrato leva a sobra sem lance a novo sorteio *(19/11)* | $[0,1]$ |
+| $\eta_0$ | Probabilidade de sorteio da sobra atribuída às administradoras cujo regulamento não foi lido; as conhecidas entram pela cláusula *(22/11; $\eta$ deixa de ser calibrado)* | $[0,1]$ |
 | $s_j$ | Fração da capacidade ordinária mensal ($N_g/T_g$) reservada ao sorteio na administradora $j$ — só no modelo de 16/11 *(15/11)* | $\mathbb{R}_{>0}$ |
 | $m_s,\ \sigma_s$ | Mediana e dispersão (escala log) de $s_j\sim\text{LogNormal}(\log m_s,\sigma_s)$ *(15/11)* | $\mathbb{R}_{>0}$ |
 | $\bar b^{e}$ | Teto do lance embutido | fração de $C$ *(15/11)* |
@@ -149,6 +159,11 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $M_0$ | Mecanismo vigente (sorteio com precedência, seguido de lance) | — |
 | $M_1,M_2,\dots$ | Desenhos alternativos avaliados no Capítulo 7. *19/11:* $M_1$ = sorteio das ativas ponderado pela espera, peso $(1+\text{meses desde a entrada})^{\beta}$, + lance pay-as-bid; $M_2$ = sorteio uniforme + lance de preço uniforme. (*16/11:* $M_1$ era o peso $\omega$ da excluída em sorteio comum, retirado) | — |
 | $\beta$ | Expoente do peso pela espera no sorteio de $M_1$ ($\beta=0$ reproduz $M_0$) *(19/11)* | $\mathbb{R}_{\ge0}$ |
+| $M_3$ | Família de desenhos sobre o lance de preço uniforme de $M_2$ *(22/11)*: $M_3^{r}(p)$ preço de reserva $p$; $M_3^{s}$ sorteio da sobra obrigatório; $M_3^{rs}(p)$ os dois; $M_3^{e}(\beta)$ sorteio ponderado pela espera. Escolhido: $M_3^{rs}(0{,}05)$ | — |
+| $M_4$ | Desenho escolhido na busca de H5 *(23/11)*: $M_3^{rs}(0{,}05)$ com o sorteio das ativas ponderado pela espera, peso $(1+\text{meses desde a entrada})^{\beta}$, $\beta=0{,}25$. A família de H5 incluía também variantes de lance fixo $M_4^{f}(p_f, n)$: até $n$ vencedores sorteados entre os que aceitam o preço postado $p_f$ | — |
+| $p$ | Preço de reserva (lance mínimo) em $M_3^{r}$ e $M_3^{rs}$; preço pago $=\max(b_{(k+1)},p)$ *(22/11)* | fração de $C$ |
+| $\mathcal{Q}(s,a)$ | Valor estimado da ação $a$ (lance) no estado $s$, tabela compartilhada pelos agentes *(22/11; não confundir com $Q(\Theta)$)* | — |
+| $b^{st}_i$ | Lance previsto pela teoria estática para H1: $\min(\lambda_i+\bar b^e,\ v_i)$, $v_i=1-e^{-\theta_i\bar w_i/12}$ *(22/11)* | fração de $C$ |
 | $\omega$ | Peso da cota excluída em sorteio comum — versão de 16/11 de $M_1$, fora da comparação *(16/11)* | $[0,1]$ |
 | $p^{u}_t$ | Preço uniforme do lance em $M_2$: o $(g^b_t+1)$-ésimo maior lance ofertado *(16/11)* | fração de $C$ |
 
@@ -160,7 +175,7 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $\phi$ | Vetor de parâmetros comportamentais | $\mathbb{R}^{d_\phi}$, $d_\phi\le 4$ |
 | $\phi_0,\phi_1,\phi_2$ | Componentes de $\phi$ na política linear $b^*_{i,t}=\max(0,\ \phi_0+\phi_1\theta_i+\phi_2(T-t)/T)$ *(21/11)* | $\mathbb{R}$ |
 | $\hat\Theta$ | Estimativa de $\Theta$ por SMM *(21/11)* | — |
-| $\Theta$ | Vetor de parâmetros estruturais, $\Theta=(\phi,F_\theta,F_\lambda,\bar r,\eta)$; calibrados por SMM: $(\phi_0,\bar r,\eta)$ *(19/11; em 16/11, $(\phi_0,m_s,\sigma_s)$)* | — |
+| $\Theta$ | Vetor de parâmetros estruturais, $\Theta=(\phi,F_\theta,F_\lambda,\bar r,\eta)$; calibrados por SMM: $(\phi_0,\phi_1,\bar r)$ *(22/11; em 19/11, $(\phi_0,\bar r,\eta)$; em 16/11, $(\phi_0,m_s,\sigma_s)$)* | — |
 | $\hat{\mu}$ | Vetor de momentos empíricos (dados do Bacen) | $\mathbb{R}^{d_\mu}$ |
 | $\tilde{\mu}(\Theta)$ | Vetor de momentos simulados | $\mathbb{R}^{d_\mu}$ |
 | $\Omega$ | Matriz de pesos do SMM | $\mathbb{R}^{d_\mu\times d_\mu}$, p.s.d. |
@@ -177,11 +192,11 @@ Nenhum símbolo aparece em qualquer capítulo sem estar nesta tabela.
 | $U_i$ | Utilidade realizada do participante $i$ | unidades de $C$ |
 | $\mathcal{W}(M)$ | Bem-estar agregado dos participantes sob o mecanismo $M$ | unidades de $C$ |
 | $\mathcal{E}(M)$ | Dispersão do tempo de espera até a contemplação | assembleias |
-| $\mathcal{S}(M)$ | Estabilidade financeira do grupo: fração das assembleias em que o sorteio previsto não ocorre por falta de saldo *(19/11)* | $[0,1]$ |
+| $\mathcal{S}(M)$ | Instabilidade do fundo (menor é melhor; nome de 22/11): fração das assembleias em que o sorteio previsto não ocorre por falta de saldo *(19/11)* | $[0,1]$ |
 | $w_i$ | Tempo de espera de $i$ até a contemplação | assembleias |
 | $e_i,\ \ell_i$ | Parte embutida e parte livre do lance pago por $i$ na contemplação *(19/11)* | fração de $C$ |
 | $r_i$ | Assembleias restantes do prazo na contemplação de $i$ *(19/11)* | assembleias |
-| $\mathcal{R}(M)$ | Prazo médio entre a exclusão e a restituição das cotas excluídas *(19/11)* | assembleias |
+| $\mathcal{R}(M)$ | Tempo de restituição (menor é melhor; nome de 22/11): prazo médio entre a exclusão e a restituição das cotas excluídas *(19/11)* | assembleias |
 | $a_{i,t}$ | Assembleias decorridas desde a entrada de $i$ no grupo, usado no peso de $M_1$ *(19/11)* | assembleias |
 
 **Convenções.** Índice $i$ sempre participante, $t$ sempre assembleia. Valores monetários

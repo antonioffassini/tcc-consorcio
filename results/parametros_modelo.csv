@@ -1,16 +1,16 @@
 parametro,simbolo,descricao,valor,origem
 vagas_sorteio,kappa_g,sorteios de ativas previstos por assembleia,1.0,regulamentos (ESTADO §5 item 26)
 atraso_exclusao,-,vencimentos sem pagamento até a exclusão,3.0,"Res. 285, art. 32, II"
-mu_theta,mu_theta,média de log theta_i (F_theta lognormal),0.0,"fixo no código, sem calibração"
+mu_theta,mu_theta,"média de log theta_i (F_theta lognormal; mediana 0,2)",-1.6094379124341003,"âncora financeira (ESTADO §4, 22/11)"
 sd_theta,sd_theta,desvio de log theta_i,0.5,"fixo no código, sem calibração"
 a_lam,a_lambda,parâmetro a da Beta de F_lambda,2.0,"fixo no código, sem calibração"
 b_lam,b_lambda,parâmetro b da Beta de F_lambda,5.0,"fixo no código, sem calibração"
 lam_max,lambda_barra,escala da liquidez (fração de C),0.6,"fixo no código, sem calibração"
-phi1,phi_1,peso da urgência na política,0.1,"fixo no código, sem calibração"
 phi2,phi_2,peso do prazo restante na política,-0.1,"fixo no código, sem calibração"
 vagas_excluidos,-,"restituições garantidas por assembleia, havendo saldo",1.0,regulamentos (ESTADO §5 item 26)
-emb_max,b_barra_e,teto do lance embutido,0.3,regulamentos Itaú cl. 14.6 e Santander cl. 72
+emb_max,b_barra_e,teto do lance embutido,0.3,regulamentos Itaú cl. 14.6 e Santander (maio/2026) cl. 9.1.7.3
 rho,rho,probabilidade de recolocação da vaga,1.0,painel A (parametros_fixos.csv)
-phi0,phi_0,calibrado por SMM,-0.038213,calibracao_theta.csv
-teto_restituicao,r_barra,calibrado por SMM,0.153963,calibracao_theta.csv
-pi,eta,calibrado por SMM,0.83924,calibracao_theta.csv
+eta0,eta_0,P(sorteio da sobra) nas administradoras sem regulamento lido,0.75,"3 de 4 regulamentos que tratam da sobra (ESTADO §4, 22/11)"
+phi0,phi_0,calibrado por SMM,-0.050754,calibracao_theta.csv
+teto_restituicao,r_barra,calibrado por SMM,0.15843,calibracao_theta.csv
+phi1,phi_1,calibrado por SMM,0.573253,calibracao_theta.csv

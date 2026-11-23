@@ -32,7 +32,7 @@ h constante, sem sorteio da sobra) a dinâmica é a do protótipo de 26/10.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 import numpy as np
 
@@ -50,9 +50,17 @@ class Parametros:
     h_idade: tuple | None = None  # ((cortes em t/T), (taxas por faixa)): risco por idade
     rho: float = 0.0        # probabilidade de recolocação da vaga excluída
     atraso_exclusao: int = 0  # vencimentos sem pagamento até a exclusão (0 = imediata)
-    # tipos: urgência theta ~ lognormal; liquidez lambda ~ Beta * lam_max (fração de C)
+    # tipos: urgência theta ~ F_theta; liquidez lambda ~ Beta * lam_max (fração de C)
+    # F_theta (ESTADO §4, 22/11): "lognormal" (mu_theta, sd_theta); "gamma" (gamma_forma, gamma_media);
+    # "mistura" (fração mist_p de tomadores com theta = mist_alto; os demais com mist_baixo)
+    theta_dist: str = "lognormal"
     mu_theta: float = 0.0
     sd_theta: float = 0.5
+    gamma_forma: float = 2.0
+    gamma_media: float = 0.2
+    mist_p: float = 0.4
+    mist_baixo: float = 0.14
+    mist_alto: float = 0.6
     a_lam: float = 2.0
     b_lam: float = 5.0
     lam_max: float = 0.6
@@ -68,6 +76,9 @@ class Parametros:
     sorteio_excluidos: str = "comum"
     vagas_excluidos: int = 1
     teto_restituicao: float = 0.0
+    # rendimento real mensal do saldo do fundo, em unidades de C (sensibilidade de 22/11; base 0):
+    # o saldo rende a taxa de aplicação e crédito e parcelas são corrigidos pelo índice do bem
+    rend_fundo: float = 0.0
 
     def risco(self, t: int) -> float:
         if self.h_idade is None:
@@ -91,6 +102,18 @@ class Resultado:
     lances_pagos: float = 0.0    # parte livre dos lances vencedores
     lances_embutidos: float = 0.0
     extra: dict = field(default_factory=dict)
+
+
+def sorteia_theta(rng, par: Parametros, k: int) -> np.ndarray:
+    """Urgência de k participantes segundo F_theta. A forma lognormal usa a mesma
+    sequência de números aleatórios do protótipo."""
+    if par.theta_dist == "lognormal":
+        return rng.lognormal(par.mu_theta, par.sd_theta, k)
+    if par.theta_dist == "gamma":
+        return rng.gamma(par.gamma_forma, par.gamma_media / par.gamma_forma, k)
+    if par.theta_dist == "mistura":
+        return np.where(rng.random(k) < par.mist_p, par.mist_alto, par.mist_baixo)
+    raise ValueError(f"theta_dist desconhecida: {par.theta_dist}")
 
 
 def lance_politica(par: Parametros, theta, lam, restante, devedor=None):
@@ -164,25 +187,32 @@ class _Cotas:
 
 
 def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
-           horizonte: int | None = None, mecanismo=None) -> Resultado:
+           horizonte: int | None = None, mecanismo=None, politica=None) -> Resultado:
     """Simula um grupo do início ao encerramento (ou até `horizonte` assembleias).
 
     `regra` decide o lance; `sorteio`, se dado, escolhe a cota sorteada entre
     as elegíveis: sorteio(rng, elig, cotas, t) -> índice (ou None). Padrão: uniforme.
     `mecanismo` (src/sim/regras.py), se dado, substitui `regra` e `sorteio`.
+    `politica`, se dada, substitui a política paramétrica de lance (agentes, src/sim/agentes.py):
+    politica(cand, cotas, t, T, par, ctx) -> (livre, embutido) para as cotas `cand`;
+    ctx["corte"] = menor lance total ofertado entre os vencedores da assembleia anterior (0 se nenhum).
     """
     if mecanismo is not None:
         regra, sorteio = mecanismo.lance, mecanismo.sorteio
+        if getattr(mecanismo, "sobra", None) is not None:   # M3^s: o desenho fixa o destino da sobra
+            par = replace(par, sorteio_sobra=bool(mecanismo.sobra))
     rng = np.random.default_rng(seed)
+    rng_lance = np.random.default_rng([seed, 7919])   # só para regras com sorteio interno (lance fixo, M4): não mexe na sequência comum
     N, T = par.N, par.T
     c = _Cotas(N, cap=2 * N + 16)
-    c.theta[:N] = rng.lognormal(par.mu_theta, par.sd_theta, N)
+    c.theta[:N] = sorteia_theta(rng, par, N)
     c.lam[:N] = rng.beta(par.a_lam, par.b_lam, N) * par.lam_max
     c.parcela[:N] = 1.0 / T
     R = entradas = saidas = lances_pagos = lances_emb = 0.0
     cs, cl, rs, at, sd = (np.zeros(T, int), np.zeros(T, int), np.zeros(T, int),
                           np.zeros(T, int), np.zeros(T))
     falha = np.zeros(T, int)
+    ctx = {"corte": 0.0}
 
     def sorteia_um(t, pool="comum", limite=np.inf):
         """Uma extração. pool: 'comum' (ativas e excluídas), 'ativas' ou 'excluidas'.
@@ -249,8 +279,13 @@ def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
         cand = np.flatnonzero((sit == ATIVA) & (dev > EPS))
         if len(cand):
             livre, emb = np.zeros(n), np.zeros(n)
-            livre[cand], emb[cand] = lance_politica(par, c.theta[cand], c.lam[cand], (T - t) / T, dev[cand])
-            venc, lv, em, R_novo = regra(R, cand, livre, emb)
+            if politica is None:
+                livre[cand], emb[cand] = lance_politica(par, c.theta[cand], c.lam[cand], (T - t) / T, dev[cand])
+            else:
+                livre[cand], emb[cand] = politica(cand, c, t, T, par, ctx)
+            venc, lv, em, R_novo = (regra(R, cand, livre, emb, rng=rng_lance) if getattr(regra, "usa_rng", False)
+                                    else regra(R, cand, livre, emb))
+            ctx["corte"] = float((livre[venc] + emb[venc]).min()) if len(venc) else 0.0
             if len(venc):
                 entradas += lv.sum(); saidas += (1.0 - em).sum()
                 lances_pagos += lv.sum(); lances_emb += em.sum()
@@ -273,7 +308,7 @@ def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
                 c.sit[j] = ATIVA; c.devedor[j] = 1.0; c.pago[j] = 0.0
                 c.entrada[j] = t + 1; c.espera[j] = np.nan; c.inad[j] = -1
                 c.parcela[j] = 1.0 / (T - t - 1)
-                c.theta[j] = rng.lognormal(par.mu_theta, par.sd_theta, k)
+                c.theta[j] = sorteia_theta(rng, par, k)
                 c.lam[j] = rng.beta(par.a_lam, par.b_lam, k) * par.lam_max
                 c.n += k
 
@@ -291,6 +326,9 @@ def simula(par: Parametros, seed: int = 0, regra=regra_M0, sorteio=None,
             else:
                 sit[sai] = EXCLUIDA; c.t_excl[sai] = t
                 recoloca(sai)
+        if par.rend_fundo and R > 0:
+            ganho = R * par.rend_fundo
+            R += ganho; entradas += ganho
         sd[t] = R
     # encerramento: restitui excluídos (e inadimplentes) remanescentes com o saldo
     for i in [] if H < T else np.flatnonzero((c.sit[: c.n] == EXCLUIDA) | (c.sit[: c.n] == INADIMPLENTE)):

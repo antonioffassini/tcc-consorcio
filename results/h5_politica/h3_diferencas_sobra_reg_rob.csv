@@ -1,0 +1,3 @@
+mecanismo,W,W_ic_inf,W_ic_sup,E,E_ic_inf,E_ic_sup,S,S_ic_inf,S_ic_sup,Rst,Rst_ic_inf,Rst_ic_sup,espera_media,espera_media_ic_inf,espera_media_ic_sup,frac_lance,frac_lance_ic_inf,frac_lance_ic_sup,melhora,piora,domina_M0
+M0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,,
+M3x_p0.05_b0.25_s1,0.000717,-0.000319,0.001421,-1.089168,-1.418616,-0.826315,-0.000245,-0.000614,-8.9e-05,-0.176612,-0.327063,0.038917,1.210706,1.09235,1.315726,-0.24937,-0.276058,-0.221827,"E,S",,True

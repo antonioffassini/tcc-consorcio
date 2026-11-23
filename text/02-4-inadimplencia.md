@@ -6,6 +6,12 @@ responsavel:
 insumos:
 fontes:
 excecoes:
+  - 285
+  - 30
+  - 11.795
+  - 9.1.6
+  - 14.3
+  - 35.1
   - 11795
   - 3.432
 paginas_alvo: 3
@@ -29,13 +35,11 @@ Sob a Circular n. 3.432/2009, a assembleia geral ordinária podia determinar o c
 
 O consorciado excluído não contemplado tem direito à restituição da importância paga ao fundo comum, calculada com base no percentual amortizado do valor do bem ou serviço vigente na data da assembleia de contemplação, acrescido dos rendimentos da aplicação financeira a que estão sujeitos os recursos enquanto não utilizados [@brasil2008lei11795]. Não são restituídos os valores pagos a título de taxa de administração e de fundo de reserva, e o contrato pode prever cláusula penal por quebra contratual.
 
-O ponto decisivo para este trabalho é o **momento** da restituição. A restituição ao excluído não é imediata: o entendimento consolidado na jurisprudência sobre os artigos 22 e 30 da lei é o de que a devolução ocorre mediante contemplação da cota excluída em sorteio, ou no encerramento do grupo, o que ocorrer primeiro. O participante excluído continua, portanto, a figurar nos sorteios das assembleias subsequentes — não para receber o crédito, mas para receber de volta o que pagou.
-
-> **Pendência de verificação.** No texto consolidado da Lei n. 11.795/2008, o art. 30 mantém apenas o caput; os §§ 1º a 3º foram vetados. O entendimento jurisprudencial sobre o momento da restituição, referido acima, ainda não foi documentado com fonte e precisa ser citado antes do fechamento desta seção. Até lá, a modelagem do Capítulo 4 trata o mecanismo de restituição como parametrizado, e não como constante.
+O ponto decisivo para este trabalho é o **momento** da restituição. No texto consolidado da Lei n. 11.795/2008, o art. 30 mantém apenas o caput, e o momento da devolução fica a cargo dos contratos. Os regulamentos lidos neste trabalho resolvem a questão da mesma forma: a cota excluída é restituída quando contemplada num sorteio próprio, e não no encerramento do grupo. Na maioria deles, esse sorteio é separado do sorteio das cotas ativas e realizado depois dele: a Porto Seguro contempla primeiro o consorciado ativo e depois o excluído, limitando as devoluções adicionais da mesma assembleia a uma fração do crédito de menor valor do grupo (art. 35.1) [@portoseguro2025regulamento]; o Itaú fixa a ordem sorteio de ativos, sorteio de excluídos e lance (cl. 14.3) [@itau2024condicoes]; e o Santander dedica uma seção própria à contemplação do excluído por sorteio, apenas para restituição de valores (seção 9.1.6) [@santander2026regulamento]. A Sicredi é a exceção, com ativos e excluídos concorrendo no mesmo sorteio [@sicredi2026regulamento]. O participante excluído continua, portanto, a figurar nos sorteios das assembleias subsequentes, não para receber o crédito, mas para receber de volta o que pagou.
 
 ## Consequência estrutural para a modelagem
 
-A conjunção das regras acima produz uma característica que nenhum modelo da literatura de associações rotativas incorpora: **o conjunto de participantes que disputa o sorteio não coincide com o conjunto de participantes que pode receber crédito**. Cotas excluídas concorrem por restituição; cotas ativas concorrem por crédito; e ambas consomem o mesmo fundo comum, cuja suficiência condiciona toda contemplação.
+A conjunção das regras acima produz uma característica que nenhum modelo da literatura de associações rotativas incorpora: **o conjunto de participantes que disputa os sorteios não coincide com o conjunto de participantes que pode receber crédito**. Cotas excluídas concorrem por restituição, em sorteio próprio; cotas ativas concorrem por crédito; e ambas consomem o mesmo fundo comum, cuja suficiência condiciona toda contemplação.
 
 Em consequência, a probabilidade de contemplação de um participante ativo depende não apenas de quantos concorrentes ativos existem, mas de quantas cotas excluídas aguardam restituição — quantidade que é ela própria função da inadimplência acumulada do grupo. O sistema tem, portanto, realimentação: inadimplência gera exclusões, exclusões aumentam a demanda por recursos do fundo, o que reduz a disponibilidade para contemplações e alonga a espera dos adimplentes.
 

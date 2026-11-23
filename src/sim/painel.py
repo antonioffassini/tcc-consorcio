@@ -39,7 +39,12 @@ from .grupo import Parametros, regra_M0, simula
 KAPPAS = (1, 2, 3, 4)
 GRADE_S = (0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1.0, 1.3, 1.7)
 NIVEIS_SOBRA = (0, 1)
-FORMAS = ("sobra", "fracao", "kappa")
+FORMAS = ("sobra", "fracao", "kappa", "sobra_reg")
+# "sobra_reg" (22/11, ESTADO §4): o destino da sobra vem dos regulamentos por CNPJ; as demais
+# administradoras recebem nível 1 com probabilidade eta0, sorteado por administradora no desenho.
+# Há um único "nível" simulado; o destino de cada grupo está em des.grupos["sobra"].
+SOBRA_REGULAMENTO = {"48041735": 1, "00000776": 1, "07808907": 1, "55942312": 0}  # Porto, Itaú, Sicredi, Santander
+ETA0 = 0.75
 # "sobra" (19/11, ESTADO §4): a heterogeneidade contratual é o destino da sobra sem lance;
 # nível 1 = a administradora faz sorteio da sobra (Porto, Itaú, Sicredi), 0 = leva o saldo
 # à assembleia seguinte (Santander); P(nível 1) = pi. As vagas de sorteio das ativas ficam
@@ -150,15 +155,26 @@ def _roda_mec(args):
 
 
 def niveis_de(forma: str) -> tuple:
-    return {"fracao": GRADE_S, "kappa": KAPPAS, "sobra": NIVEIS_SOBRA}[forma]
+    return {"fracao": GRADE_S, "kappa": KAPPAS, "sobra": NIVEIS_SOBRA, "sobra_reg": (1,)}[forma]
+
+
+def atribui_sobra(des: "Desenho", eta0: float = ETA0, seed: int = 0) -> "Desenho":
+    """Destino da sobra por administradora (forma sobra_reg): regulamento se conhecido, senão Bernoulli(eta0)."""
+    rng = np.random.default_rng(seed + 50_000)
+    sorteio = {c: int(rng.random() < eta0) for c in des.adms}
+    nivel = {c: SOBRA_REGULAMENTO.get(str(c), sorteio[c]) for c in des.adms}
+    des.grupos["sobra"] = des.grupos["cnpj"].map(nivel).astype(int)
+    return des
 
 
 def vagas(forma: str, nivel: float, N: int, T: int) -> float:
     return max(1.0, nivel * N / T) if forma == "fracao" else float(nivel)
 
 
-def ajusta(base: Parametros, forma: str, nivel, N: int, T: int) -> Parametros:
+def ajusta(base: Parametros, forma: str, nivel, N: int, T: int, sobra=None) -> Parametros:
     """Parâmetros do grupo (N, T) no nível contratual `nivel` da forma dada."""
+    if forma == "sobra_reg":
+        return replace(base, N=N, T=T, sorteio_sobra=bool(sobra))
     if forma == "sobra":
         return replace(base, N=N, T=T, sorteio_sobra=bool(nivel))
     return replace(base, N=N, T=T, vagas_sorteio=vagas(forma, nivel, N, T))
@@ -174,7 +190,7 @@ def simula_desenho(des: Desenho, base: Parametros, kappas=None, regra=regra_M0, 
     tarefas, chaves = [], []
     for k in kappas:
         for g in des.grupos.itertuples():
-            par = ajusta(base, forma, k, g.N, g.T)
+            par = ajusta(base, forma, k, g.N, g.T, getattr(g, "sobra", None))
             if mecanismo is None:
                 tarefas.append((par, g.seed + 7919 * rep, g.horizonte, ts[g.gid], regra, sorteio))
             else:
@@ -215,6 +231,8 @@ def pesos_sobra(pi: float) -> np.ndarray:
 
 def pesos(forma: str, psi: tuple, niveis) -> np.ndarray:
     """psi = (nu,) para 'kappa'; (m_s, sigma_s) para 'fracao'; (pi,) para 'sobra'."""
+    if forma == "sobra_reg":
+        return np.array([1.0])
     if forma == "sobra":
         return pesos_sobra(psi[0])
     return pesos_kappa(psi[0], tuple(niveis)) if forma == "kappa" else pesos_fracao(psi[0], psi[1], tuple(niveis))

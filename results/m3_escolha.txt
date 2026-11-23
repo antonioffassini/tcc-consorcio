@@ -1,0 +1,3 @@
+rodada=1
+escolhida=M3rs_p0.05
+domina_A=True

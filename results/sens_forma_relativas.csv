@@ -1,0 +1,5 @@
+forma,mecanismo,W_pct_2c,W_ic_inf_pct_2c,W_ic_sup_pct_2c,E_pct_2c,E_ic_inf_pct_2c,E_ic_sup_pct_2c,S_pct_2c,S_ic_inf_pct_2c,S_ic_sup_pct_2c,Rst_pct_2c,Rst_ic_inf_pct_2c,Rst_ic_sup_pct_2c,domina_M0
+gamma,M2,1.46,1.2,1.69,1.09,0.8,1.35,-1.56,-6.59,2.65,-0.18,-0.32,-0.05,False
+gamma,M3rs_p0.05,1.53,1.25,1.74,1.1,0.75,1.43,-1.69,-6.83,2.55,-0.21,-0.34,-0.05,False
+mistura,M2,1.83,1.56,2.07,1.26,0.92,1.57,-0.79,-2.14,0.1,-0.04,-0.1,0.0,False
+mistura,M3rs_p0.05,5.68,5.03,6.4,12.64,11.51,13.7,-1.45,-3.44,-0.43,-0.03,-0.07,0.02,False

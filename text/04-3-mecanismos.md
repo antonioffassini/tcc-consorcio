@@ -6,17 +6,22 @@ responsavel:
 insumos:
   - decisões do log
   - ESTADO.md §4, 2026-11-15, 2026-11-16 e 2026-11-19 (sequência da assembleia, excluídas, sobra, embutido, M1, M2, política fixa)
-  - ESTADO.md §5 itens 23 e 26 (admissibilidade; regulamentos)
+  - ESTADO.md §5 itens 23, 26 e 35 (admissibilidade; regulamentos); §4, 2026-11-22 (família M3)
   - src/sim/regras.py
   - src/sim/grupo.py
 fontes:
   - results/calibracao_momentos.csv
 excecoes:
+  - 14.5
+  - 9.1
   - 11795
   - 11.795
   - 285
   - 30
   - 14.6
+  - 14.5.8
+  - 35.8
+  - 9.1.7.3
 paginas_alvo: 5
 ---
 
@@ -28,7 +33,7 @@ A comparação entre desenhos de contemplação só faz sentido se os desenhos d
 
 Em cada assembleia $t$, o fundo comum dispõe do saldo $R_t$, medido em frações do crédito $C$. A norma fixa três restrições que valem para qualquer desenho. A contemplação está condicionada à existência de recursos suficientes no grupo, tanto para a entrega do crédito quanto para a restituição aos excluídos (art. 23 da Lei n. 11.795/2008) [@brasil2008lei11795]; por isso o número de vagas $g_t$ é um resultado de $R_t$ e das ofertas, e não um parâmetro do desenho. O lance só pode ser realizado depois das contemplações por sorteio previstas para a assembleia, ou se estas não ocorrerem por falta de recursos (art. 12, I, da Resolução BCB n. 285/2023) [@bcb2023res285]. E concorrem à contemplação apenas o consorciado ativo e os excluídos, estes para efeito de restituição dos valores pagos (arts. 21 e 22, § 2º, da Lei).
 
-O restante da sequência é definido pelo contrato de adesão, e o modelo segue o que se observou em regulamentos de grupos de imóveis de cinco administradoras [CITAR: portoseguro2025regulamento; itau2024condicoes; santander2025regulamento; ademicon2024contrato; sicredi2026regulamento — referências verificadas, PDFs pendentes]. Em quatro deles, o sorteio das cotas excluídas é separado e posterior ao das ativas; em um, ativas e excluídas disputam o mesmo sorteio. Nenhum fixa o número de sorteios por assembleia, que fica condicionado ao saldo do fundo. Quanto aos recursos que sobram depois do lance, três contratos os destinam a novos sorteios entre as ativas na mesma assembleia, e um os leva à assembleia seguinte.
+O restante da sequência é definido pelo contrato de adesão, e o modelo segue o que se observou em regulamentos de grupos de imóveis de quatro administradoras [@portoseguro2025regulamento; @itau2024condicoes; @sicredi2026regulamento; @santander2026regulamento]. Em três deles, o sorteio das cotas excluídas é separado e posterior ao das ativas; no da Sicredi, ativas e excluídas disputam o mesmo sorteio. Um quinto contrato, da Ademicon, foi lido em novembro de 2026, mas foi retirado do site da administradora antes de ser arquivado e não é usado como fonte. Nenhum fixa o número de sorteios por assembleia, que fica condicionado ao saldo do fundo. Quanto aos recursos que sobram depois do lance, três contratos os destinam a novos sorteios entre as ativas na mesma assembleia, e um os leva à assembleia seguinte. Os textos deixam claro quando isso acontece: o novo sorteio ocorre quando não há mais oferta de lance [@portoseguro2025regulamento, art. 35.8] ou quando os lances não bastam para usar todo o saldo [@itau2024condicoes, cl. 14.5.8]. Uma sobra de um crédito ou mais só aparece, portanto, quando a demanda por lance se esgota; se ainda houvesse ofertante, o leilão a teria usado. O Santander fixa ainda um lance mínimo de 10% do valor da cota [@santander2026regulamento, cl. 9.1.7.3], elemento que o desenho vigente modelado não inclui.
 
 Com base nisso, a assembleia simulada segue cinco etapas:
 
@@ -40,7 +45,7 @@ Com base nisso, a assembleia simulada segue cinco etapas:
 
 O teto $\bar r$ tem inspiração no limite por assembleia que um dos contratos impõe às devoluções a excluídos. O destino da sobra é tratado como cláusula da administradora: uma fração $\eta$ delas adota o sorteio da sobra. Os dois parâmetros, $\bar r$ e $\eta$, são calibrados (seção 6.3). A variante em que ativas e excluídas disputam o mesmo sorteio é mantida como análise de sensibilidade.
 
-O lance vencedor é destinado à amortização de prestações vincendas (art. 12, parágrafo único, da Resolução) e, quando embutido, é deduzido do crédito a ser entregue (art. 13, parágrafo único) [@bcb2023res285]. O lance ofertado pela cota $i$, $b_{i,t}$, é um percentual do próprio crédito, composto por uma parte livre, paga com liquidez própria, e uma parte embutida, limitada a $\bar b^{e}$. Nos dois contratos que fixam esse teto no regulamento, ele corresponde a 30% do crédito [CITAR: itau2024condicoes, cl. 14.6; santander2025regulamento, cl. 72 — PDFs pendentes]. Se o vencedor oferta $b$, da qual uma parte $e$ é embutida, o fundo recebe $b-e$ e entrega $1-e$; a saída líquida é $1-b$, e a contemplação por lance de uma cota é viável quando $R_t \ge 1-b$.
+O lance vencedor é destinado à amortização de prestações vincendas (art. 12, parágrafo único, da Resolução) e, quando embutido, é deduzido do crédito a ser entregue (art. 13, parágrafo único) [@bcb2023res285]. O lance ofertado pela cota $i$, $b_{i,t}$, é um percentual do próprio crédito, composto por uma parte livre, paga com liquidez própria, e uma parte embutida, limitada a $\bar b^{e}$. Nos dois contratos que fixam esse teto no regulamento, ele corresponde a 30% do crédito [@itau2024condicoes, cl. 14.6; @santander2026regulamento, cl. 9.1.7.3]. Se o vencedor oferta $b$, da qual uma parte $e$ é embutida, o fundo recebe $b-e$ e entrega $1-e$; a saída líquida é $1-b$, e a contemplação por lance de uma cota é viável quando $R_t \ge 1-b$.
 
 ## Critério de admissibilidade
 
@@ -74,22 +79,35 @@ Como $b_{(k+1)}$ não cresce com $k$, o lado direito cresce com $k$, e $g^b_t$ �
 
 Sob as mesmas ofertas, $M_2$ contempla por lance no máximo tantas cotas quanto $M_0$. Em $M_0$, $k$ vencedores são viáveis se $R_t \ge \sum_{i=1}^{k}(1-b_{(i)})$; como cada $b_{(i)}$ com $i \le k$ é maior ou igual a $b_{(k+1)}$, a condição de $M_2$ é mais exigente, e os vencedores de $M_2$ são sempre os primeiros da ordem de $M_0$. O preço menor pago pelos vencedores custa vagas, porque entra menos dinheiro no fundo por contemplação.
 
-A motivação de $M_2$ vem da teoria de leilões. Com uma única vaga, $M_2$ é o leilão de segundo preço, em que ofertar o próprio valor é estratégia dominante, e $M_0$ é o leilão de primeiro preço, em que o participante reduz a oferta abaixo do valor. Com valores privados independentes e uniformes entre $n$ participantes, a oferta de equilíbrio no primeiro preço é $(n-1)/n$ do valor, e as receitas esperadas dos dois formatos coincidem [CITAR: vickrey1961counterspeculation; krishna2010auction, cap. 2 — referências verificadas, PDF pendente]. Para vagas múltiplas com demanda unitária, o pagamento pela maior oferta recusada é a generalização que preserva a dominância da oferta pelo valor [CITAR: krishna2010auction, parte II — PDF pendente; conferir o capítulo exato ao ler]. No consórcio, essas propriedades valem só de forma aproximada: o valor da contemplação antecipada depende do que ocorrerá nas assembleias seguintes, e a restrição de liquidez limita a oferta.
+A motivação de $M_2$ vem da teoria de leilões. Com uma única vaga, $M_2$ é o leilão de segundo preço, em que ofertar o próprio valor é estratégia dominante, e $M_0$ é o leilão de primeiro preço, em que o participante reduz a oferta abaixo do valor. Com valores privados independentes e uniformes entre $n$ participantes, a oferta de equilíbrio no primeiro preço é $(n-1)/n$ do valor, e as receitas esperadas dos dois formatos coincidem [@vickrey1961counterspeculation]. Para vagas múltiplas com demanda unitária e quantidade fixada de antemão, Vickrey mostrou que fixar o preço pela primeira oferta recusada leva ao resultado eficiente [@vickrey1961counterspeculation]. No consórcio, essas propriedades valem só de forma aproximada, por três razões: o valor da contemplação antecipada depende do que ocorrerá nas assembleias seguintes; a restrição de liquidez limita a oferta; e, sobretudo, o número de vagas não é fixado de antemão, porque depende do próprio preço pela condição $R_t \ge k(1-p^{u}_t)$. Uma oferta mais alta pode alterar quantas cotas são contempladas, e a dominância da oferta pelo valor deixa de estar garantida. É mais uma razão para não supor que o comportamento sob $M_2$ seja o mesmo que sob $M_0$ (seção 4.5).
+
+As associações rotativas de lance estudadas na Índia usam leilão oral ascendente, cujo resultado se aproxima do segundo preço, e não o envelope fechado com pagamento da própria oferta praticado no consórcio [@klonner2008private]. Nelas, o lance vencedor é distribuído como dividendo aos que perderam. Esse destino seria uma alternativa natural de desenho, mas é inadmissível no consórcio brasileiro, porque a Resolução destina o lance vencedor à amortização das prestações do próprio vencedor (art. 12, parágrafo único) [@bcb2023res285]; por isso não entra na comparação.
 
 Quanto à admissibilidade, $M_2$ altera apenas a regra de apuração do lance, que a Resolução delega ao contrato (art. 2º, XII). Resta uma questão de leitura: os arts. 12 e 13 falam em "valor do lance vencedor". Este trabalho entende esse valor como o montante que o contrato define como devido pelo vencedor, e não necessariamente o percentual ofertado. A ata da assembleia continua obrigada a relacionar as cotas ofertantes e os percentuais oferecidos (art. 48) [@bcb2023res285], de modo que a apuração por preço uniforme não reduz a transparência exigida. A Resolução não trata do ponto de forma explícita.
 
+## $M_3$: preço uniforme com reserva e destino da sobra
+
+A comparação com política fixa (seção 7.4) mostra que o preço uniforme de $M_2$ cobra menos de cada vencedor e deixa saldo parado no fundo. A família $M_3$ parte de $M_2$ e combina três instrumentos para usar esse saldo, todos admissíveis pelo mesmo critério, porque mexem apenas na forma do lance e do sorteio, que a norma delega ao contrato:
+
+- **preço de reserva $p$**: só concorrem ofertas de ao menos $p$, e o preço pago é $\max(b_{(k+1)}, p)$. É um lance mínimo, como o praticado por uma das administradoras lidas;
+- **sorteio obrigatório da sobra**: o saldo que o leilão não usa vai a sorteio entre as ativas na mesma assembleia, em todas as administradoras, como já fazem três dos contratos lidos;
+- **peso pela espera**: o sorteio das ativas recebe o peso $(1+a_{i,t})^{\beta}$ de $M_1$, com $\beta$ pequeno.
+
+As onze variantes da família, a regra de escolha entre elas e a separação entre a amostra usada para escolher e a usada para avaliar foram registradas antes da comparação (seção 7.4). O preço uniforme é o único dos instrumentos que nenhum dos contratos lidos adota.
+
 ## Síntese e o que permanece fixo
 
-O Quadro 4.1 resume os três desenhos. Em todos, a sequência da assembleia, o sorteio de excluídas e o destino da sobra são os da subseção sobre a assembleia no modelo.
+O Quadro 4.1 resume os desenhos. Em todos, a sequência da assembleia, o sorteio de excluídas e o destino da sobra são os da subseção sobre a assembleia no modelo.
 
 | | Sorteio entre ativas | Lance: quem vence | Lance: quanto paga |
 |---|---|---|---|
 | $M_0$ | uniforme | maiores ofertas, enquanto $R_t \ge 1-b$ | a própria oferta |
 | $M_1$ | peso $(1+a_{i,t})^{\beta}$ | como $M_0$ | como $M_0$ |
 | $M_2$ | como $M_0$ | as $k$ maiores, com $R_t \ge k(1-p^{u}_t)$ | $p^{u}_t$, a maior oferta recusada |
+| $M_3^{rs}(p)$ | como $M_0$, mais sorteio obrigatório da sobra | as $k$ maiores ofertas de ao menos $p$ | $\max(p^{u}_t, p)$ |
 
 : Quadro 4.1 — Desenhos de contemplação avaliados. Fonte: elaboração própria.
 
 Na implementação, cada desenho é um par de regras, uma de sorteio e uma de lance, passado ao mesmo simulador. A troca de desenho não altera nenhuma outra parte do código, e o desenho vigente executado por esse caminho reproduz exatamente o resultado do simulador original. Os testes que verificam cada regra isoladamente, incluindo os casos de leilão com uma única vaga, são descritos na seção 6.4.
 
-Um elemento fica fixo entre desenhos por escolha de modelagem, e não por exigência normativa: a política de lance dos participantes, $\pi_\phi$. Sob $M_2$, a melhor resposta de um participante racional muda, já que deixa de haver motivo para reduzir a oferta abaixo do valor; sob $M_1$, quem espera há mais tempo tem menos motivo para ofertar. Manter a mesma política nos três desenhos isola o efeito da regra sobre um comportamento dado, mas não captura a adaptação do comportamento à regra nova. As implicações dessa escolha são tratadas na seção 4.5.
+Um elemento fica fixo entre desenhos por escolha de modelagem, e não por exigência normativa: a política de lance dos participantes, $\pi_\phi$. Sob $M_2$, a melhor resposta de um participante racional muda, já que deixa de haver motivo para reduzir a oferta abaixo do valor; sob $M_1$, quem espera há mais tempo tem menos motivo para ofertar. Manter a mesma política em todos os desenhos isola o efeito da regra sobre um comportamento dado, mas não captura a adaptação do comportamento à regra nova. As implicações dessa escolha são tratadas na seção 4.5, e a seção 7.6 refaz a comparação com o lance aprendido sob cada desenho.

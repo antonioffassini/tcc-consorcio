@@ -6,6 +6,9 @@ responsavel:
 insumos:
 fontes:
 excecoes:
+  - 94
+  - 20%
+  - 36.12
   - 11795
   - 3.432
   - 285
@@ -34,7 +37,7 @@ Do ponto de vista do participante, o sorteio é o canal de custo marginal zero: 
 
 ## Lance
 
-O lance é a oferta de antecipação de parcelas com que o participante disputa a alteração de sua posição na ordem de recebimento. As modalidades praticadas — lance livre, em que o valor é definido pelo ofertante; lance fixo, em que o percentual é predefinido em contrato; e lance embutido — variam conforme o contrato de participação e a administradora, dentro do que a regulação admite.
+O lance é a oferta de antecipação de parcelas com que o participante disputa a alteração de sua posição na ordem de recebimento. As modalidades praticadas — lance livre, em que o valor é definido pelo ofertante; lance fixo, em que o percentual é predefinido em contrato; e lance embutido — variam conforme o contrato de participação e a administradora, dentro do que a regulação admite. O lance fixo funciona como um preço postado: quem aceita pagar o percentual definido concorre, e o vencedor entre os que aceitaram é escolhido por um critério de desempate ligado à extração da Loteria Federal. A Porto Seguro contempla primeiro uma cota por lance fixo e as demais por lance livre (art. 36.12) [@portoseguro2025regulamento]; o Santander alterna, até esgotar o saldo, uma cota por lance fixo de 20% e até quatro por lance livre (Anexo V) [@santander2026regulamento]; a Sicredi admite as duas modalidades na mesma assembleia, desde que previstas na proposta (cl. 94) [@sicredi2026regulamento]. Os contratos também diferem no destino do saldo que os lances não consomem: na Porto Seguro, no Itaú e na Sicredi, ele vai a novos sorteios; no Santander, fica para a assembleia seguinte (seção 4.2).
 
 O **lance embutido** merece destaque por alterar a natureza da decisão. Trata-se da oferta de recursos, para fins de contemplação, mediante utilização de parte do próprio valor do crédito previsto para distribuição na respectiva assembleia [@bcb2009circ3432]. A modalidade foi mantida pela Resolução BCB n. 285/2023 (art. 13) [@bcb2023res285]. Em outras palavras, o participante oferta contra o crédito que receberá, e não contra sua liquidez corrente. A existência dessa modalidade significa que a restrição de liquidez do participante não é absoluta: existem duas tecnologias de lance com custos de oportunidade distintos, e a escolha entre elas é parte do problema de decisão. Um modelo que trate o lance como pura função da liquidez disponível ignora essa margem.
 

@@ -1,0 +1,13 @@
+parametro,passo,momento,delta_por_passo,delta_em_ep,numero_condicao,ponto
+phi0,0.05,frac_lance_media,0.084638,5.179962,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+phi0,0.05,frac_lance_dp,-0.013091,-1.354234,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+phi0,0.05,taxa_contempl_q50,0.000296,0.631088,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+phi0,0.05,frac_sorteio_excluidos,0.064896,2.359573,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+teto_restituicao,0.05,frac_lance_media,-0.001968,-0.120458,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+teto_restituicao,0.05,frac_lance_dp,0.002244,0.232127,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+teto_restituicao,0.05,taxa_contempl_q50,-3.4e-05,-0.073465,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+teto_restituicao,0.05,frac_sorteio_excluidos,0.047983,1.744636,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+phi1,0.25,frac_lance_media,0.176949,10.829578,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+phi1,0.25,frac_lance_dp,0.012227,1.264813,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+phi1,0.25,taxa_contempl_q50,0.000582,1.241964,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"
+phi1,0.25,frac_sorteio_excluidos,0.107459,3.907147,7.8753,"{'phi0': np.float64(-0.050754), 'teto_restituicao': np.float64(0.15843), 'phi1': np.float64(0.573253)}"

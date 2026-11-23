@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 import itertools
 import json
+import os
 import pickle
 from dataclasses import dataclass, replace
 from pathlib import Path
@@ -54,9 +55,17 @@ GRADES_FORMA = {
               "teto_restituicao": np.array([0.0, 0.10, 0.20, 0.35, 0.70, 1.50])},
 }
 LIMITES = dict(phi0=(-0.30, 0.30), lam_max=(0.05, 1.05), m_s=(0.05, 2.5), sigma_s=(0.01, 1.5),
-               teto_restituicao=(0.0, 1.5), pi=(0.0, 1.0), nu=(0.0, 5.0))
+               teto_restituicao=(0.0, 1.5), pi=(0.0, 1.0), nu=(0.0, 5.0), phi1=(0.0, 2.0))
 MISTURA = {"fracao": ["m_s", "sigma_s"], "sobra": ["pi"], "kappa": ["nu"]}
-CAL_FORMA = {"fracao": CAL, "sobra": CAL_SOBRA}
+CAL_FORMA = {"fracao": CAL, "sobra": CAL_SOBRA, "sobra_reg": CAL_SOBRA}
+# 22/11: phi1 entra em Theta (Pedro); grade 3D na forma sobra_reg
+GRADES_FORMA["sobra_reg"] = dict(GRADES_FORMA["sobra"], phi1=np.array([0.0, 0.25, 0.5, 1.0, 2.0]))
+if os.environ.get("TCC_SEM_PHI1"):   # sensibilidades de 22/11: phi1 fixo no valor calibrado da base (via --base-json)
+    GRADES_FORMA["sobra_reg"] = dict(GRADES_FORMA["sobra"])
+MISTURA["sobra_reg"] = []
+# saídas: results/ (base) ou results/<subpasta> para sensibilidades (TCC_RESULTS); TCC_TAG distingue a superfície
+RES = Path(os.environ.get("TCC_RESULTS", "results"))
+TAG = os.environ.get("TCC_TAG", "")
 
 
 # ================================================================ dados
@@ -115,7 +124,7 @@ def base_parametros(fixos: pd.DataFrame, forma: str = "fracao") -> Parametros:
     f = fixos.set_index("parametro")["valor"]
     base = Parametros(h=0.0, h_idade=painel.h_idade_de(fixos), rho=float(f["rho"]), atraso_exclusao=3,
                       emb_max=EMB_MAX)
-    if forma == "sobra":
+    if forma in ("sobra", "sobra_reg"):
         base = replace(base, emb_max=EMB_MAX_REV, sorteio_excluidos="separado", vagas_excluidos=1)
     return base
 
@@ -310,7 +319,7 @@ class Objetivo:
 
     def _inicios_mistura(self):
         return {"fracao": [(0.4, 0.3), (0.7, 0.3), (1.0, 0.3)], "sobra": [(0.2,), (0.5,), (0.8,)],
-                "kappa": [(0.3,), (1.0,)]}[self.sup.forma]
+                "kappa": [(0.3,), (1.0,)], "sobra_reg": [()]}[self.sup.forma]
 
     def minimiza(self, mu=None, reps=None, x0=None):
         """Busca inicial nos nós da grade (mistura otimizada em cada nó) e Nelder-Mead conjunto."""
@@ -319,6 +328,11 @@ class Objetivo:
             melhor = (np.inf, None)
             for no in itertools.product(*self.sup.grades):
                 for m0 in self._inicios_mistura():
+                    if not len(m0):
+                        f = self.Q(tuple(no), mu, reps)
+                        if f < melhor[0]:
+                            melhor = (f, tuple(no))
+                        continue
                     r = optimize.minimize(lambda z: self.Q((*no, *z), mu, reps), x0=list(m0), method="Nelder-Mead",
                                           options=dict(xatol=1e-4, fatol=1e-6, maxiter=400))
                     if r.fun < melhor[0]:
@@ -338,7 +352,7 @@ def _carrega(proc):
 
 
 def _pkl(proc, forma):
-    return Path(proc) / f"calibracao_superficie_{forma}.pkl"
+    return Path(proc) / f"calibracao_superficie_{forma}{TAG}.pkl"
 
 
 class _Unpickler(pickle.Unpickler):
@@ -393,7 +407,7 @@ def identificacao(args):
                            sv1=sv[0], sv2=sv[1], sv3=sv[2], condicao=sv[0] / sv[-1]))
     t = pd.concat([t, pd.DataFrame(resumo)], ignore_index=True)
     t["mu_dado"] = t["momento"].map(mu); t["ep_dado"] = t["momento"].map(dict(zip(CAL, se)))
-    t.round(6).to_csv(Path("results") / "calibracao_identificacao.csv", index=False)
+    t.round(6).to_csv(RES / "calibracao_identificacao.csv", index=False)
     print(J.round(3).to_string()); print(pd.DataFrame(resumo).round(3).to_string(index=False))
 
 
@@ -407,6 +421,8 @@ def calibra(args):
     var = boot[cal].var().values
     W = np.diag(1.0 / var)
     base = base_parametros(fixos, forma)
+    if args.base_json:
+        base = replace(base, **json.loads(args.base_json))
     grades = GRADES_FORMA[forma]
     if args.reusar_superficie:
         sup = carrega_pkl(args.proc, forma)["sup"]
@@ -414,10 +430,13 @@ def calibra(args):
         print("[superfície reaproveitada]", flush=True)
     else:
         des = [painel.monta_desenho(a, b, args.grupos_por_adm, seed=r) for r in range(args.replicas)]
+        if forma == "sobra_reg":
+            des = [painel.atribui_sobra(d, args.eta0, seed=r) for r, d in enumerate(des)]
         n = int(np.prod([len(g) for g in grades.values()]))
         print(f"[{forma}: {len(des)} réplicas × {n} pontos × {len(painel.niveis_de(forma))} níveis]", flush=True)
         sup = Superficie(grades, None, des, base, processos=args.processos, forma=forma,
                          log=lambda s: print(s, flush=True))
+        sup.eta0 = args.eta0 if forma == "sobra_reg" else None
         with open(_pkl(args.proc, forma), "wb") as fh:
             pickle.dump(dict(sup=sup), fh)
     obj = Objetivo(sup, mu, W, cal)
@@ -448,24 +467,26 @@ def calibra(args):
                           p97_5_bootstrap=np.percentile(th_b, 97.5, axis=0)))
     for r, x in enumerate(th_r):
         T[f"replica_{r}"] = x
-    T.round(6).to_csv(Path("results") / "calibracao_theta.csv", index=False)
+    T.round(6).to_csv(RES / "calibracao_theta.csv", index=False)
     M = pd.DataFrame(dict(momento=cal, dado=[mu[k] for k in cal], ep_dado=np.sqrt(var), peso_W=np.diag(W),
                           simulado_superficie=[m_sup[k] for k in cal], simulado_direto=[m_dir[k] for k in cal]))
     M["t_residuo"] = (M["simulado_direto"] - M["dado"]) / M["ep_dado"]
     M["Q_parcela"] = M["t_residuo"] ** 2
-    M.round(6).to_csv(Path("results") / "calibracao_momentos.csv", index=False)
+    M.round(6).to_csv(RES / "calibracao_momentos.csv", index=False)
     cfg = dict(forma=forma, semente_bootstrap=SEMENTE, B=args.B, B_theta=args.B_theta, replicas=len(des),
                grupos_por_adm=args.grupos_por_adm, parametros=obj.nomes,
                grades={k: list(map(float, v)) for k, v in zip(sup.nomes, sup.grades)},
                momentos_calibracao=cal, W="diag(1/Var_boot(momentos de calibração))", Q_min=q,
                graus_sobreidentificacao=len(cal) - len(th), Q_direto=float(M["Q_parcela"].sum()),
                emb_max=base.emb_max, sorteio_excluidos=base.sorteio_excluidos,
+               eta0=(args.eta0 if forma == "sobra_reg" else None), base_json=args.base_json,
+               theta_dist=base.theta_dist,
                fixos=dict(phi1=base.phi1, phi2=base.phi2, mu_theta=base.mu_theta, sd_theta=base.sd_theta,
                           a_lam=base.a_lam, b_lam=base.b_lam, lam_max=base.lam_max,
                           vagas_sorteio=base.vagas_sorteio, vagas_excluidos=base.vagas_excluidos))
     pd.DataFrame([dict(chave=k, valor=json.dumps(v, ensure_ascii=False)) for k, v in cfg.items()]).to_csv(
-        Path("results") / "calibracao_config.csv", index=False)
-    pd.DataFrame(th_b, columns=obj.nomes).round(6).to_csv(Path("results") / "calibracao_bootstrap.csv", index=False)
+        RES / "calibracao_config.csv", index=False)
+    pd.DataFrame(th_b, columns=obj.nomes).round(6).to_csv(RES / "calibracao_bootstrap.csv", index=False)
     with open(_pkl(args.proc, forma), "wb") as fh:
         pickle.dump(dict(sup=sup, mu=mu, W=W, theta=th, nomes=obj.nomes, boot=boot, th_b=th_b, th_r=th_r), fh)
     print(T.round(4).to_string(index=False)); print(M.round(5).to_string(index=False))
@@ -516,7 +537,9 @@ def h2(args):
     Wg = np.concatenate([p / len(blocos) for p in sup.pesos_gm])
     m_sim = momentos_teste(F, Z, Wg, sup.alvo, adms, w=w)
     v_sim = np.array([[x[k] for k in TES] for x in por_rep])
-    S_sim = np.cov(v_sim.T, ddof=1) / len(blocos)
+    # com 1 réplica (sensibilidades simplificadas, ESTADO §4, 23/11) não há variância entre réplicas: S_sim = 0,
+    # o que torna o teste mais exigente (variância total menor), igual para as três formas comparadas
+    S_sim = np.cov(v_sim.T, ddof=1) / len(blocos) if len(blocos) > 1 else np.zeros((len(TES), len(TES)))
     v_th = []
     for t in th_b:
         dd = sup.interpola_todos(tuple(t[:d_sim]))
@@ -527,9 +550,11 @@ def h2(args):
     d = np.array([m_sim[k] for k in TES]) - d_dado
     J = float(d @ np.linalg.solve(S, d)); p = float(stats.chi2.sf(J, 2))
     se = np.sqrt(np.diag(S)); t = d / se
-    cal = pd.read_csv(Path("results") / "calibracao_momentos.csv")
+    cal = pd.read_csv(RES / "calibracao_momentos.csv")
     ajuste_ruim = bool((cal["t_residuo"].abs() > 2).any())
     obs = "partição pendente de confirmação" + ("; condicional a ajuste ruim de calibração" if ajuste_ruim else "")
+    if len(blocos) == 1:
+        obs += "; 1 réplica: sem variância de simulação (teste mais exigente)"
     if forma == "sobra":
         obs += "; modelo revisado após ver o teste de 16/11 (ESTADO §4, 19/11)"
     L = []
@@ -544,7 +569,7 @@ def h2(args):
                   observacao=obs + "; só spearman_lance_tamanho"))
     L.append(dict(item="sinal_spearman_simulado_negativo", t=m_sim["spearman_lance_tamanho"], limiar=0.0,
                   rejeita=bool(m_sim["spearman_lance_tamanho"] < 0), observacao=obs))
-    pd.DataFrame(L).round(6).to_csv(Path("results") / "h2_teste.csv", index=False)
+    pd.DataFrame(L).round(6).to_csv(RES / "h2_teste.csv", index=False)
     print(pd.DataFrame(L).round(4).to_string(index=False))
 
 
@@ -552,7 +577,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("comando", choices=["identificacao", "calibra", "h2"])
     ap.add_argument("--proc", default="data/processed", type=Path)
-    ap.add_argument("--forma", default="sobra", choices=["sobra", "fracao"])
+    ap.add_argument("--forma", default="sobra", choices=["sobra", "fracao", "sobra_reg"])
+    ap.add_argument("--eta0", default=painel.ETA0, type=float, help="forma sobra_reg: P(sorteio da sobra) nas adms sem regulamento")
+    ap.add_argument("--base-json", default="", help='sobrescreve Parametros, ex.: {"mu_theta": -1.609, "phi1": 0.5}')
     ap.add_argument("--B", default=500, type=int, help="reamostragens para Var dos momentos de dados (W)")
     ap.add_argument("--B-theta", default=100, type=int, help="reamostragens re-otimizadas para o ep de Theta")
     ap.add_argument("--grupos-por-adm", default=12, type=int)

@@ -25,18 +25,30 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.analysis.calibracao import SEMENTE, carrega_pkl
+from src.analysis.calibracao import RES, SEMENTE, carrega_pkl
 from src.sim import painel
 from src.sim.grupo import CONTEMPLADA, EXCLUIDA, RESTITUIDA, INADIMPLENTE, simula
-from src.sim.regras import M0, M2, m1_espera
+from src.sim.regras import M0, M2, familia_m3, m1_espera
 
 CRITERIOS = {"W": +1, "E": -1, "S": -1, "Rst": -1}   # +1: maior é melhor; -1: menor é melhor
 BETAS = (0.5, 1.0, 2.0)
 
 
-def mecanismos():
-    L = [("M0", M0)] + [(f"M1_beta{b:g}", m1_espera(b)) for b in BETAS] + [("M2", M2)]
-    return L
+CONJUNTO = "h3"   # "h3": M0, M1, M2; "m3": M0, M2 e a família M3; ou lista de nomes
+
+
+def mecanismos(conjunto=None):
+    conjunto = CONJUNTO if conjunto is None else conjunto
+    todos = [("M0", M0)] + [(f"M1_beta{b:g}", m1_espera(b)) for b in BETAS] + [("M2", M2)] + familia_m3()
+    if conjunto == "h3":
+        nomes = ["M0"] + [f"M1_beta{b:g}" for b in BETAS] + ["M2"]
+    elif conjunto == "m3":
+        nomes = ["M0", "M2"] + [n for n, _ in familia_m3()]
+    else:
+        nomes = ["M0"] + [n for n in conjunto.split(",") if n != "M0"]
+    d = dict(todos)
+    from src.sim.regras import resolve
+    return [(n, d[n] if n in d else resolve(n)) for n in nomes]
 
 
 def metricas_grupo(r, T) -> dict:
@@ -74,7 +86,8 @@ def roda_comparacao(des_list, base, theta_sim: dict, pesos_niv, forma, processos
         tarefas, chaves = [], []
         for nome, mec in mecanismos():
             for g in des.grupos.itertuples():
-                par = painel.ajusta(replace(base, **theta_sim), forma, nivel_adm[g.adm], g.N, g.T)
+                par = painel.ajusta(replace(base, **theta_sim), forma, nivel_adm[g.adm], g.N, g.T,
+                                    getattr(g, "sobra", None))
                 tarefas.append((par, g.seed + 7919 * r, mec))
                 chaves.append(dict(replica=r, mecanismo=nome, gid=g.gid, cnpj=g.cnpj, adm=g.adm, peso=g.peso))
         if processos > 1:
@@ -167,11 +180,17 @@ def robustez(df_list, nivel_m0: dict) -> pd.DataFrame:
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--proc", default="data/processed", type=Path)
-    ap.add_argument("--forma", default="sobra", choices=["sobra", "fracao"])
+    ap.add_argument("--forma", default="sobra", choices=["sobra", "fracao", "sobra_reg"])
+    ap.add_argument("--mecanismos", default="h3", help='"h3", "m3" ou lista separada por vírgula')
+    ap.add_argument("--conjunto", default="todas", choices=["todas", "A", "B"],
+                    help="A = réplica 0 do desenho calibrado; B = desenhos novos (sementes 10, 11, 12); ESTADO §4, 22/11")
+    ap.add_argument("--sufixo", default="", help="acrescentado ao nome dos arquivos de saída")
     ap.add_argument("--B", default=500, type=int)
     ap.add_argument("--n-theta", default=10, type=int)
     ap.add_argument("--processos", default=2, type=int)
     a = ap.parse_args(argv)
+    global CONJUNTO
+    CONJUNTO = a.mecanismos
     P = carrega_pkl(a.proc, a.forma)
     sup, th, th_b = P["sup"], np.asarray(P["theta"]), np.asarray(P["th_b"])
     d_sim = len(sup.nomes)
@@ -182,25 +201,39 @@ def main(argv=None):
 
     ts, wn = separa(th)
     print(f"[{a.forma}] Theta = {dict(zip(sup.nomes + ['mistura'], list(th)))}", flush=True)
-    df = roda_comparacao(sup.des, sup.base, ts, wn, sup.forma, processos=a.processos,
+    des = sup.des
+    if a.conjunto == "A":
+        des = sup.des[:1]
+    elif a.conjunto == "B":
+        from src.analysis.calibracao import _carrega
+        da, db, _ = _carrega(a.proc)
+        eta0 = getattr(sup, "eta0", painel.ETA0)
+        des = [painel.monta_desenho(da, db, 12, seed=s) for s in (10, 11, 12)]
+        if sup.forma == "sobra_reg":
+            des = [painel.atribui_sobra(d, eta0, seed=s) for d, s in zip(des, (10, 11, 12))]
+    rep_seeds = None if a.conjunto != "B" else [SEMENTE + 101 * s for s in (10, 11, 12)]
+    df = roda_comparacao(des, sup.base, ts, wn, sup.forma, processos=a.processos, rep_seeds=rep_seeds,
                          log=lambda s: print(s, flush=True))
+    sfx = a.forma + a.sufixo
     niveis, difs = resume(df, a.B, SEMENTE)
-    niveis.round(6).to_csv(Path("results") / f"h3_metricas_{a.forma}.csv", index=False)
-    difs.round(6).to_csv(Path("results") / f"h3_diferencas_{a.forma}.csv", index=False)
+    niveis.round(6).to_csv(RES / f"h3_metricas_{sfx}.csv", index=False)
+    difs.round(6).to_csv(RES / f"h3_diferencas_{sfx}.csv", index=False)
     print(niveis.round(4).to_string(index=False)); print(difs.round(4).to_string(index=False), flush=True)
     # robustez à incerteza de calibração
+    if a.n_theta <= 0:
+        return
     rng = np.random.default_rng(SEMENTE + 7)
     escolha = rng.choice(len(th_b), size=min(a.n_theta, len(th_b)), replace=False)
     nivel_m0 = niveis.set_index("mecanismo").loc["M0"].to_dict()
     dfs = []
     for k, i in enumerate(escolha):
         tsk, wk = separa(th_b[i])
-        dfs.append(roda_comparacao(sup.des[:1], sup.base, tsk, wk, sup.forma, processos=a.processos,
+        dfs.append(roda_comparacao(des[:1], sup.base, tsk, wk, sup.forma, processos=a.processos,
                                    rep_seeds=[SEMENTE + 1000 + k], log=lambda s: None))
         print(f"  robustez {k + 1}/{len(escolha)}", flush=True)
     rob = robustez(dfs, nivel_m0)
     rob["indice_bootstrap"] = rob["sorteio_theta"].map(dict(enumerate(map(int, escolha))))
-    rob.round(6).to_csv(Path("results") / f"h3_robustez_{a.forma}.csv", index=False)
+    rob.round(6).to_csv(RES / f"h3_robustez_{sfx}.csv", index=False)
     resumo = rob.groupby("mecanismo")["domina_pontual"].agg(["sum", "count"]).reset_index()
     resumo["robusta"] = resumo["sum"] >= 0.8 * resumo["count"]
     print(resumo.to_string(index=False))
@@ -210,7 +243,7 @@ def main(argv=None):
                politica="fixa entre mecanismos (crítica de Lucas); [DECISÃO PENDENTE: papel do RL na comparação]",
                robustez=resumo.to_dict(orient="records"))
     pd.DataFrame([dict(chave=k, valor=json.dumps(v, ensure_ascii=False, default=str)) for k, v in cfg.items()]).to_csv(
-        Path("results") / f"h3_config_{a.forma}.csv", index=False)
+        RES / f"h3_config_{sfx}.csv", index=False)
 
 
 if __name__ == "__main__":

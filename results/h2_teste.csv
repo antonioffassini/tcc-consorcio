@@ -1,6 +1,6 @@
 item,dado,simulado,diferenca,ep_dado,ep_simulacao,ep_theta,ep_total,t,limiar,rejeita,menor_dif_detectavel_80,observacao
-spearman_lance_tamanho,0.316057,0.531983,0.215927,0.140231,0.0069,0.014471,0.141144,1.529832,2.24,False,0.395203,"partição pendente de confirmação; modelo revisado após ver o teste de 16/11 (ESTADO §4, 19/11)"
-frac_sem_contempl,0.066306,0.053142,-0.013164,0.012292,0.008454,0.016996,0.022615,-0.582091,2.24,False,0.063323,"partição pendente de confirmação; modelo revisado após ver o teste de 16/11 (ESTADO §4, 19/11); contaminado (ESTADO §5 item 21)"
-wald_conjunto,,0.27758,,,,,,2.563293,5.99,False,,"partição pendente de confirmação; modelo revisado após ver o teste de 16/11 (ESTADO §4, 19/11); coluna t = J, coluna simulado = p-valor qui2(2)"
-regra_secundaria_spearman,,,,,,,,1.529832,1.96,False,,"partição pendente de confirmação; modelo revisado após ver o teste de 16/11 (ESTADO §4, 19/11); só spearman_lance_tamanho"
-sinal_spearman_simulado_negativo,,,,,,,,0.531983,0.0,False,,"partição pendente de confirmação; modelo revisado após ver o teste de 16/11 (ESTADO §4, 19/11)"
+spearman_lance_tamanho,0.316057,0.521339,0.205282,0.140231,0.012436,0.01312,0.141391,1.451876,2.24,False,0.395895,partição pendente de confirmação
+frac_sem_contempl,0.066306,0.047242,-0.019064,0.012292,0.006172,0.010796,0.017486,-1.090238,2.24,False,0.048961,partição pendente de confirmação; contaminado (ESTADO §5 item 21)
+wald_conjunto,,0.210261,,,,,,3.118807,5.99,False,,"partição pendente de confirmação; coluna t = J, coluna simulado = p-valor qui2(2)"
+regra_secundaria_spearman,,,,,,,,1.451876,1.96,False,,partição pendente de confirmação; só spearman_lance_tamanho
+sinal_spearman_simulado_negativo,,,,,,,,0.521339,0.0,False,,partição pendente de confirmação

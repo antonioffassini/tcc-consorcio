@@ -1,0 +1,6 @@
+item,dado,simulado,diferenca,ep_dado,ep_simulacao,ep_theta,ep_total,t,limiar,rejeita,menor_dif_detectavel_80,observacao
+spearman_lance_tamanho,0.316057,0.486988,0.170931,0.140231,0.0,0.019173,0.141535,1.207693,2.24,False,0.396298,partição pendente de confirmação; 1 réplica: sem variância de simulação (teste mais exigente)
+frac_sem_contempl,0.066306,0.059495,-0.006811,0.012292,0.0,0.012319,0.017403,-0.391378,2.24,False,0.048727,partição pendente de confirmação; 1 réplica: sem variância de simulação (teste mais exigente); contaminado (ESTADO §5 item 21)
+wald_conjunto,,0.445045,,,,,,1.61916,5.99,False,,"partição pendente de confirmação; 1 réplica: sem variância de simulação (teste mais exigente); coluna t = J, coluna simulado = p-valor qui2(2)"
+regra_secundaria_spearman,,,,,,,,1.207693,1.96,False,,partição pendente de confirmação; 1 réplica: sem variância de simulação (teste mais exigente); só spearman_lance_tamanho
+sinal_spearman_simulado_negativo,,,,,,,,0.486988,0.0,False,,partição pendente de confirmação; 1 réplica: sem variância de simulação (teste mais exigente)

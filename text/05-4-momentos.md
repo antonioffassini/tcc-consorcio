@@ -41,7 +41,7 @@ O vetor de calibração $\mu^{\text{cal}}$ reúne os quatro primeiros; o de test
 
 **Média da fração de lance.** É o momento que mais responde ao comportamento de lance. Com mais intensidade de lance (maior $\phi_0$), mais participantes ofertam, mais vagas são preenchidas pelo lance, e a fração sobe.
 
-**Desvio-padrão entre administradoras.** É a contrapartida do fato 1 da seção 5.3: o modelo deve gerar a diferença entre administradoras, e não só o nível médio. No modelo revisado, ele responde à fração $\eta$ de administradoras que sorteiam a sobra, porque é essa cláusula que separa administradoras de fração de lance alta e baixa.
+**Desvio-padrão entre administradoras.** É a contrapartida do fato 1 da seção 5.3: o modelo deve gerar a diferença entre administradoras, e não só o nível médio. No modelo atual, ele responde ao peso da urgência no lance, $\phi_1$, que regula quanto a heterogeneidade dos participantes se traduz em lances diferentes, e às cláusulas da sobra de cada administradora, que deixaram de ser calibradas e passaram a vir dos regulamentos (seção 4.2).
 
 **Mediana da taxa de contemplação.** Ancora o ritmo total, que depende do saldo do fundo e, portanto, de quanto as restituições a excluídos consomem. A mediana, e não a média, foi escolhida porque a média é sensível aos meses de contemplação concentrada perto do encerramento.
 

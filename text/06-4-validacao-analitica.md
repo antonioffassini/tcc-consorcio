@@ -16,7 +16,7 @@ paginas_alvo: 4
 
 A seção 2.5 assumiu um compromisso: antes de usar o simulador onde a literatura não tem solução analítica, mostrar que ele recupera a solução nos casos em que ela existe. Esta seção cumpre o compromisso em parte. Os casos-limite escolhidos verificam a contabilidade do fundo, as regras de alocação e as propriedades conhecidas dos leilões que $M_0$ e $M_2$ generalizam. Todos estão implementados como testes automatizados no repositório e rodam a cada alteração do código; nenhum resultado do Capítulo 7 foi gerado com uma versão do simulador que não passasse em todos eles.
 
-O que a seção não cobre é a comparação entre o comportamento de agentes que aprendem e o equilíbrio de um modelo de leilão repetido com solução fechada. Essa validação dependia dos agentes de aprendizado por reforço da seção 6.2, cujo papel na comparação ainda está em decisão. [RESULTADO PENDENTE: validação do agente de RL em leilão único contra o equilíbrio de primeiro preço, se o RL entrar]
+O que a seção não cobre é a comparação entre o comportamento de agentes que aprendem e o equilíbrio de um modelo de leilão repetido com solução fechada. Essa validação não foi feita. Em seu lugar, a hipótese H1 compara o lance aprendido pelos agentes da seção 6.2 com a previsão da teoria estática, no próprio grupo de consórcio (seção 7.3), e a convergência dos agentes é verificada pelo critério registrado na seção 6.2. A comparação com um equilíbrio de leilão repetido em forma fechada fica como extensão.
 
 ## Contabilidade e alocação
 
@@ -32,7 +32,7 @@ O que a seção não cobre é a comparação entre o comportamento de agentes qu
 
 ## Leilão único
 
-A verificação mais informativa é a do leilão de uma vaga. Restringindo o lance a um vencedor, com participantes de valores independentes e uniformes em $[0, 1]$, $M_0$ é um leilão de primeiro preço e $M_2$ é um leilão de segundo preço, para os quais a teoria dá solução fechada [CITAR: vickrey1961counterspeculation; krishna2010auction, cap. 2 — referências verificadas, PDF pendente]. Com $n$ participantes:
+A verificação mais informativa é a do leilão de uma vaga. Restringindo o lance a um vencedor, com participantes de valores independentes e uniformes em $[0, 1]$, $M_0$ é um leilão de primeiro preço e $M_2$ é um leilão de segundo preço, para os quais a teoria dá solução fechada [@vickrey1961counterspeculation]. Com $n$ participantes:
 
 - no leilão de primeiro preço, a estratégia de equilíbrio simétrico é ofertar $(n-1)/n$ do valor;
 - no de segundo preço, ofertar o próprio valor é estratégia dominante;
@@ -45,6 +45,10 @@ O teste tem um alcance preciso. Ele mostra que as regras de lance do simulador i
 ## Propriedades de $M_1$ e $M_2$ no grupo
 
 Dois testes verificam propriedades dos desenhos alternativos fora do leilão único. Para $M_2$ com várias vagas, os vencedores pagam a primeira oferta recusada, e o número de vencedores é o maior inteiro compatível com o saldo a esse preço; com as mesmas ofertas, $M_2$ contempla no máximo tantas cotas quanto $M_0$, e as mesmas primeiras. Para $M_1$, com $\beta = 0$ o mecanismo reproduz $M_0$; num grupo fechado, em que todas as cotas entraram juntas, o peso pela espera também reproduz o sorteio uniforme; e num grupo aberto, o peso reduz a dispersão do tempo de espera, como pretendido.
+
+## Propriedades das famílias $M_3$ e $M_4$
+
+As famílias de desenhos acrescentadas depois da primeira comparação têm testes próprios. Para $M_3$: com lance mínimo zero, o lance de preço uniforme com reserva coincide com $M_2$; nenhum vencedor paga menos que o lance mínimo; o sorteio da sobra é sempre acionado quando o desenho o impõe; e as onze variantes registradas são construídas pelo nome. Para $M_4$: cada vencedor do lance fixo paga exatamente o percentual postado, o número de vencedores respeita o saldo, um mesmo participante não vence duas vezes na assembleia, e o sorteio entre os que aceitam o lance fixo usa um gerador próprio, sem alterar a sequência aleatória comum aos desenhos comparados.
 
 ## Onde fica a documentação
 

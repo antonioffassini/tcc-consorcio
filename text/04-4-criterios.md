@@ -36,11 +36,11 @@ A forma de $U_i$ é deliberadamente simples. Ela não captura aversão ao risco,
 
 O segundo critério, $\mathcal{E}(M)$, é o desvio-padrão de $w_i$ entre as mesmas cotas. Ele não mede a espera média, que depende sobretudo da capacidade do grupo e muda pouco entre mecanismos, e sim a incerteza que o participante enfrenta ao entrar. Um grupo em que metade é contemplada no primeiro ano e a outra metade só no último tem a mesma espera média de um grupo em que todos esperam o mesmo tempo, mas expõe cada participante a um risco muito maior. O critério é relevante para o consórcio em particular porque a escolha de entrar num grupo, em vez de financiar o bem, costuma depender de uma expectativa sobre quando a carta virá.
 
-## Estabilidade do fundo
+## Instabilidade do fundo
 
 O terceiro critério, $\mathcal{S}(M)$, é a fração das assembleias em que o sorteio previsto não ocorre por falta de saldo, havendo cota ativa elegível. É uma medida direta de quando o fundo comum deixa de cumprir o que o contrato promete ao participante que não oferta lance. A escolha dessa medida, e não de outras possíveis como o saldo ocioso ou o risco de insolvência no encerramento, segue de duas observações. O saldo ocioso tem leitura ambígua: saldo alto pode significar tanto folga quanto ineficiência na alocação. E a insolvência do grupo não ocorre no modelo, em que as saídas nunca excedem as entradas (seção 6.4). O que pode ocorrer, e varia com o mecanismo, é o fundo chegar à assembleia sem saldo para o sorteio, o que acontece, por exemplo, quando um lance livre alto e um embutido alto esvaziam o caixa no mês anterior.
 
-## Restituição aos excluídos
+## Tempo de restituição aos excluídos
 
 O quarto critério, $\mathcal{R}(M)$, é o número médio de assembleias entre a exclusão de uma cota e a restituição do que ela pagou; a restituição no encerramento conta como ocorrida na última assembleia. O excluído é parte do grupo, tem direito à restituição por sorteio e, nos dados, recebe a maior parte das contemplações por sorteio (seção 5.3). Um mecanismo que melhore a situação de quem continua pagando à custa de quem saiu precisa aparecer na avaliação, e é esse o papel do critério.
 
