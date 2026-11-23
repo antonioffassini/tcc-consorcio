@@ -7,6 +7,10 @@
 % BLOCO 1 - ROSCAs
 % BLOCO 2 - ECONOMETRIA ESTRUTURAL DE LEILOES
 % BLOCO 3 - APRENDIZADO POR REFORCO EM MERCADOS
+% BLOCO 4 - CALIBRACAO POR SIMULACAO (SMM, inferencia indireta) e critica de Lucas
+% BLOCO 5 - APRENDIZADO POR REFORCO E SISTEMAS MULTIAGENTE (fundamentos)
+% BLOCO 6 - SIMULACAO BASEADA EM AGENTES (alinhamento/docking)
+% BLOCO 7 - CONSORCIO BRASILEIRO NA LITERATURA ECONOMICA
 % Entradas nao verificadas ficam em docs/BIBLIOGRAFIA.md, nao aqui.
 % ============================================================================
 
@@ -77,6 +81,20 @@
   doi     = {10.1111/j.1468-0297.2008.02142.x}
 }
 
+@article{besley1994rotating,
+  author  = {Besley, Timothy and Coate, Stephen and Loury, Glenn},
+  title   = {Rotating Savings and Credit Associations, Credit Markets and Efficiency},
+  journal = {The Review of Economic Studies},
+  volume  = {61}, number = {4}, pages = {701--719}, year = {1994}
+}
+
+@article{anderson2002economics,
+  author  = {Anderson, Siwan and Baland, Jean-Marie},
+  title   = {The Economics of Roscas and Intrahousehold Resource Allocation},
+  journal = {The Quarterly Journal of Economics},
+  volume  = {117}, number = {3}, pages = {963--995}, year = {2002}
+}
+
 @article{kuo1993loans,
   author  = {Kuo, Ping-Sing},
   title   = {Loans, Bidding Strategies and Equilibrium in the Discount Bid Rotating Credit Association},
@@ -97,7 +115,7 @@
   title   = {Identification of Standard Auction Models},
   journal = {Econometrica},
   volume  = {70}, number = {6}, pages = {2107--2140}, year = {2002},
-  doi     = {10.1111/1468-0262.00435}
+  doi     = {10.1111/j.1468-0262.2002.00435.x}
 }
 
 @incollection{athey2007nonparametric,
@@ -135,7 +153,9 @@
   author  = {Calvano, Emilio and Calzolari, Giacomo and Denicol{\`o}, Vincenzo and Pastorello, Sergio},
   title   = {Algorithmic Collusion with Imperfect Monitoring},
   journal = {International Journal of Industrial Organization},
-  volume  = {79}, pages = {102712}, year = {2021}
+  volume  = {79}, pages = {102712}, year = {2021},
+  doi     = {10.1016/j.ijindorg.2021.102712},
+  note    = {PDF em disco: versão aceita (jan. 2021), repositório Cadmus/EUI; o texto publicado não foi conferido}
 }
 
 @inproceedings{banchio2022artificial,
@@ -223,6 +243,15 @@
   urldate = {2026-11-17}
 }
 
+@misc{santander2026regulamento,
+  author  = {{SANTANDER BRASIL ADMINISTRADORA DE CONSÓRCIO}},
+  title   = {Regulamento Unificado Consórcio Santander},
+  year    = {2026},
+  note    = {maio/2026; substitui a versão de fev./2025, retirada do site},
+  url     = {https://cms.santander.com.br/sites/WPS/documentos/arq-consorcios-regulamento-unificado/26-06-02_205842_regulamento-consorcio-santander-maio-2026.pdf},
+  urldate = {2026-11-22}
+}
+
 @misc{ademicon2024contrato,
   author  = {{ADEMICON ADMINISTRADORA DE CONSÓRCIOS}},
   title   = {Contrato de Participação em Grupo de Consórcio, por Adesão (Imóveis)},
@@ -239,4 +268,155 @@
   note    = {publicado em 04/09/2026},
   url     = {https://www.sicredi.com.br/media/produtos/filer_public/2026/09/04/regulamento_bens_imoveis.pdf},
   urldate = {2026-11-17}
+}
+
+@misc{bcb2023res362,
+  author       = {{BANCO CENTRAL DO BRASIL}},
+  title        = {Resolução BCB n. 362, de 14 de dezembro de 2023: altera a Resolução BCB n. 285, de 19 de janeiro de 2023, que dispõe sobre a constituição e o funcionamento de grupos de consórcio},
+  year         = {2023}
+}
+
+@misc{bcb2024in525,
+  author       = {{BANCO CENTRAL DO BRASIL}},
+  title        = {Instrução Normativa BCB n. 525, de 19 de setembro de 2024},
+  year         = {2024},
+  note         = {Remessa mensal das informações de consórcio pelo Documento 2080 (art. 54 da Resolução BCB n. 285/2023)}
+}
+
+@misc{bcb2024res381,
+  author       = {{BANCO CENTRAL DO BRASIL}},
+  title        = {Resolução BCB n. 381, de 15 de maio de 2024: dispõe sobre medidas temporárias e em caráter de excepcionalidade aplicáveis ao funcionamento de grupos de consórcio},
+  year         = {2024}
+}
+
+% ---------- BLOCO 4 : CALIBRACAO POR SIMULACAO E CRITICA DE LUCAS ----------
+@article{mcfadden1989method,
+  author  = {McFadden, Daniel},
+  title   = {A Method of Simulated Moments for Estimation of Discrete Response Models Without Numerical Integration},
+  journal = {Econometrica},
+  volume  = {57}, number = {5}, pages = {995--1026}, year = {1989}
+}
+
+@article{duffie1993simulated,
+  author  = {Duffie, Darrell and Singleton, Kenneth J.},
+  title   = {Simulated Moments Estimation of Markov Models of Asset Prices},
+  journal = {Econometrica},
+  volume  = {61}, number = {4}, pages = {929--952}, year = {1993}
+}
+
+@article{gourieroux1993indirect,
+  author  = {Gouri{\'e}roux, Christian and Monfort, Alain and Renault, Eric},
+  title   = {Indirect Inference},
+  journal = {Journal of Applied Econometrics},
+  volume  = {8}, number = {S1}, pages = {S85--S118}, year = {1993}
+}
+
+@article{lucas1976econometric,
+  author  = {Lucas, Robert E., Jr.},
+  title   = {Econometric Policy Evaluation: A Critique},
+  journal = {Carnegie-Rochester Conference Series on Public Policy},
+  volume  = {1}, pages = {19--46}, year = {1976},
+  note    = {PDF em disco: reimpressão em BRUNNER, K.; MELTZER, A. (Ed.). Theory, Policy, Institutions. Amsterdam: North-Holland, 1983, p. 257--284; ao citar página, usar a da reimpressão ou conferir no original}
+}
+
+% ---------- BLOCO 5 : APRENDIZADO POR REFORCO E SISTEMAS MULTIAGENTE ----------
+@article{watkins1992qlearning,
+  author  = {Watkins, Christopher J. C. H. and Dayan, Peter},
+  title   = {Q-Learning},
+  journal = {Machine Learning},
+  volume  = {8}, number = {3}, pages = {279--292}, year = {1992},
+  doi     = {10.1007/BF00992698}
+}
+
+@book{sutton2018reinforcement,
+  author    = {Sutton, Richard S. and Barto, Andrew G.},
+  title     = {Reinforcement Learning: An Introduction},
+  edition   = {2},
+  publisher = {The MIT Press},
+  address   = {Cambridge, MA},
+  year      = {2018},
+  isbn      = {9780262039246},
+  note      = {PDF dos autores (incompleteideas.net), \copyright 2018, 2020}
+}
+
+@article{busoniu2008comprehensive,
+  author  = {Bu{\c{s}}oniu, Lucian and Babu{\v{s}}ka, Robert and De Schutter, Bart},
+  title   = {A Comprehensive Survey of Multiagent Reinforcement Learning},
+  journal = {IEEE Transactions on Systems, Man, and Cybernetics, Part C: Applications and Reviews},
+  volume  = {38}, number = {2}, pages = {156--172}, year = {2008},
+  doi     = {10.1109/TSMCC.2007.913919}
+}
+
+@article{hernandezleal2019survey,
+  author  = {Hernandez-Leal, Pablo and Kartal, Bilal and Taylor, Matthew E.},
+  title   = {A Survey and Critique of Multiagent Deep Reinforcement Learning},
+  journal = {Autonomous Agents and Multi-Agent Systems},
+  volume  = {33}, pages = {750--797}, year = {2019},
+  doi     = {10.1007/s10458-019-09421-1}
+}
+
+@article{erev1998predicting,
+  author  = {Erev, Ido and Roth, Alvin E.},
+  title   = {Predicting How People Play Games: Reinforcement Learning in Experimental Games with Unique, Mixed Strategy Equilibria},
+  journal = {American Economic Review},
+  volume  = {88}, number = {4}, pages = {848--881}, year = {1998}
+}
+
+@inproceedings{dutting2019optimal,
+  author    = {D{\"u}tting, Paul and Feng, Zhe and Narasimhan, Harikrishna and Parkes, David C. and Ravindranath, Sai Srivatsa},
+  title     = {Optimal Auctions through Deep Learning},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {97}, pages = {1706--1715}, year = {2019},
+  publisher = {PMLR}
+}
+
+% ---------- BLOCO 6 : SIMULACAO BASEADA EM AGENTES ----------
+@article{axtell1996aligning,
+  author  = {Axtell, Robert and Axelrod, Robert and Epstein, Joshua M. and Cohen, Michael D.},
+  title   = {Aligning Simulation Models: A Case Study and Results},
+  journal = {Computational and Mathematical Organization Theory},
+  volume  = {1}, number = {2}, pages = {123--141}, year = {1996},
+  doi     = {10.1007/BF01299065}
+}
+
+% ---------- BLOCO 7 : CONSORCIO BRASILEIRO NA LITERATURA ECONOMICA ----------
+@techreport{vandoornik2024savings,
+  author      = {van Doornik, Bernardus and Gomes, Armando and Schoenherr, David and Skrastins, Janis},
+  title       = {Savings-and-Credit Contracts},
+  institution = {Banco Central do Brasil},
+  type        = {Working Paper Series},
+  number      = {610},
+  address     = {Brasília},
+  year        = {2024},
+  note        = {dez. 2024; também BIS Working Paper n. 1236}
+}
+
+@techreport{vandoornik2024housing,
+  author      = {van Doornik, Bernardus and Fazio, Dimas and Ramadorai, Tarun and Skrastins, Janis},
+  title       = {Housing and Fertility},
+  institution = {Banco Central do Brasil},
+  type        = {Working Paper Series},
+  number      = {612},
+  address     = {Brasília},
+  year        = {2024},
+  note        = {dez. 2024}
+}
+
+@inproceedings{sargent2015introductory,
+  author    = {Sargent, Robert G.},
+  title     = {An Introductory Tutorial on Verification and Validation of Simulation Models},
+  booktitle = {Proceedings of the 2015 Winter Simulation Conference},
+  editor    = {Yilmaz, L. and Chan, W. K. V. and Moon, I. and Roeder, T. M. K. and Macal, C. and Rossetti, M. D.},
+  publisher = {IEEE},
+  address   = {Piscataway, NJ},
+  pages     = {1729--1740}, year = {2015}
+}
+
+@article{zheng2022ai,
+  author  = {Zheng, Stephan and Trott, Alexander and Srinivasa, Sunil and Parkes, David C. and Socher, Richard},
+  title   = {The {AI} Economist: Taxation Policy Design via Two-Level Deep Multiagent Reinforcement Learning},
+  journal = {Science Advances},
+  volume  = {8}, number = {18}, pages = {eabk2607}, year = {2022},
+  doi     = {10.1126/sciadv.abk2607}
 }
